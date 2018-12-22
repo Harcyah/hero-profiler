@@ -1,0 +1,5 @@
+## Title: HeroProfiler
+## Interface: 80100
+## Notes: Adds a /heroprofiler commande
+## SavedVariablesPerCharacter: HeroProfiles
+HeroProfiler.lua
