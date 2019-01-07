@@ -13,6 +13,14 @@ local function ExportProfession(index)
 	return profession
 end
 
+local function ExportBackpack()
+	local bag = {}
+	bag.link = nil
+	bag.numSlots = GetContainerNumSlots(0)
+	bag.freeSlots = GetContainerNumFreeSlots(0)
+	return bag
+end
+
 local function ExportContainer(index)
 	local bag = {}
 	bag.link = GetInventoryItemLink("player", ContainerIDToInventoryID(index))
@@ -26,9 +34,12 @@ local function ExportProfiles()
 	HeroProfiles.realm = GetRealmName()
 	HeroProfiles.level = UnitLevel("player")
 	HeroProfiles.money = GetMoney()
+	HeroProfiles.zone = GetZoneText()
 	HeroProfiles.heartstone = GetBindLocation()
 	HeroProfiles.gender = UnitSex("player")
 	HeroProfiles.xp = UnitXP("player")
+	HeroProfiles.health = UnitHealthMax("player")
+	HeroProfiles.side = UnitFactionGroup("player")
 	
 	local restId, restName = GetRestState()
 	HeroProfiles.restId = restId
@@ -42,7 +53,7 @@ local function ExportProfiles()
 	HeroProfiles.hasMasterRiding = tostring(IsSpellKnown(90265))
 	
 	local className, classFile, classID = UnitClass("player");
-	HeroProfiles.class = classFile
+	HeroProfiles.clazz = classFile
 	
 	local raceName, raceFile, raceID = UnitRace("player")
 	HeroProfiles.race = raceFile
@@ -109,10 +120,11 @@ local function ExportProfiles()
 	
 	-- Bags
 	HeroProfiles.bags = {}
-	HeroProfiles.bags.bag1 = GetInventoryItemLink("player", ContainerIDToInventoryID(1))
-	HeroProfiles.bags.bag2 = GetInventoryItemLink("player", ContainerIDToInventoryID(2))
-	HeroProfiles.bags.bag3 = GetInventoryItemLink("player", ContainerIDToInventoryID(3))
-	HeroProfiles.bags.bag4 = GetInventoryItemLink("player", ContainerIDToInventoryID(4))
+	HeroProfiles.bags.backpack = ExportBackpack()
+	HeroProfiles.bags.bag1 = ExportContainer(1)
+	HeroProfiles.bags.bag2 = ExportContainer(2)
+	HeroProfiles.bags.bag3 = ExportContainer(3)
+	HeroProfiles.bags.bag4 = ExportContainer(4)
 end
 
 SlashCmdList['HERO_PROFILER'] = function()
@@ -149,17 +161,17 @@ frame:SetScript("OnEvent", function(self, event, ...)
 	end
 	
 	if (event == "BANKFRAME_OPENED") then
-		HeroProfiles.bags.bank1 = GetInventoryItemLink("player", ContainerIDToInventoryID(5))
-		HeroProfiles.bags.bank2 = GetInventoryItemLink("player", ContainerIDToInventoryID(6))
-		HeroProfiles.bags.bank3 = GetInventoryItemLink("player", ContainerIDToInventoryID(7))
-		HeroProfiles.bags.bank4 = GetInventoryItemLink("player", ContainerIDToInventoryID(8))
-		HeroProfiles.bags.bank5 = GetInventoryItemLink("player", ContainerIDToInventoryID(9))
-		HeroProfiles.bags.bank6 = GetInventoryItemLink("player", ContainerIDToInventoryID(10))
-		HeroProfiles.bags.bank7 = GetInventoryItemLink("player", ContainerIDToInventoryID(11))
+		HeroProfiles.bags.bank1 = ExportContainer(5)
+		HeroProfiles.bags.bank2 = ExportContainer(6)
+		HeroProfiles.bags.bank3 = ExportContainer(7)
+		HeroProfiles.bags.bank4 = ExportContainer(8)
+		HeroProfiles.bags.bank5 = ExportContainer(9)
+		HeroProfiles.bags.bank6 = ExportContainer(10)
+		HeroProfiles.bags.bank7 = ExportContainer(11)
 	end
 	
 	if (event == "TRADE_SKILL_LIST_UPDATE") then	
-		if (C_TradeSkillUI.IsTradeSkillReady()) then			
+		if (C_TradeSkillUI.IsTradeSkillReady()) then
 			levels = {}
 			local categories = { C_TradeSkillUI.GetCategories() };
 			for i, categoryID in ipairs(categories) do
@@ -175,14 +187,18 @@ frame:SetScript("OnEvent", function(self, event, ...)
 			end			
 			
 			-- where to put this ?
-			local _, _, _, _, _, _, parentSkillLineName =  C_TradeSkillUI.GetTradeSkillLine();
+			local _, _, _, _, _, parentSkillLineID, parentSkillLineName =  C_TradeSkillUI.GetTradeSkillLine();
 			if (HeroProfiles.professions.prof1.name == parentSkillLineName) then
+				HeroProfiles.professions.prof1.id = parentSkillLineID
 				HeroProfiles.professions.prof1.levels = levels
 			elseif (HeroProfiles.professions.prof2.name == parentSkillLineName) then
+				HeroProfiles.professions.prof2.id = parentSkillLineID
 				HeroProfiles.professions.prof2.levels = levels
 			elseif (HeroProfiles.professions.cooking.name == parentSkillLineName) then
+				HeroProfiles.professions.cooking.id = parentSkillLineID
 				HeroProfiles.professions.cooking.levels = levels
 			elseif (HeroProfiles.professions.fishing.name == parentSkillLineName) then
+				HeroProfiles.professions.fishing.id = parentSkillLineID
 				HeroProfiles.professions.fishing.levels = levels
 			end
 		end
