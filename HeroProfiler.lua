@@ -67,11 +67,6 @@ local function ExportProfiles()
 	HeroProfiles.specName = specName
 	HeroProfiles.specRole = GetSpecializationRoleByID(specId)
 	
-	local guildName, guildRankName, guildRankIndex = GetGuildInfo("player")
-	HeroProfiles.guildName = guildName
-	HeroProfiles.guildRankName = guildRankName
-	HeroProfiles.guildRankIndex = guildRankIndex
-	
 	local totalAchievements, completedAchievements = GetNumCompletedAchievements()
 	HeroProfiles.totalAchievements = totalAchievements
 	HeroProfiles.completedAchievements = completedAchievements
@@ -136,6 +131,7 @@ SLASH_HERO_PROFILER1 = '/heroprofiler'
 local frame = CreateFrame("Frame");
 frame:RegisterEvent("ADDON_LOADED");
 frame:RegisterEvent("PLAYER_LOGIN");
+frame:RegisterEvent("PLAYER_GUILD_UPDATE");
 frame:RegisterEvent("PLAYER_LOGOUT");
 frame:RegisterEvent("TIME_PLAYED_MSG");
 frame:RegisterEvent("BANKFRAME_OPENED");
@@ -158,6 +154,13 @@ frame:SetScript("OnEvent", function(self, event, ...)
 	
 	if (event == "PLAYER_LOGIN") then
 		ExportProfiles()
+	end
+	
+	if (event == "PLAYER_GUILD_UPDATE") then
+		local guildName, guildRankName, guildRankIndex = GetGuildInfo("player")
+		HeroProfiles.guildName = guildName
+		HeroProfiles.guildRankName = guildRankName
+		HeroProfiles.guildRankIndex = guildRankIndex
 	end
 	
 	if (event == "BANKFRAME_OPENED") then
