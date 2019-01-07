@@ -38,6 +38,7 @@ local function ExportProfiles()
 	HeroProfiles.heartstone = GetBindLocation()
 	HeroProfiles.gender = UnitSex("player")
 	HeroProfiles.xp = UnitXP("player")
+	HeroProfiles.xpMax = UnitXPMax("player")
 	HeroProfiles.health = UnitHealthMax("player")
 	HeroProfiles.side = UnitFactionGroup("player")
 	
@@ -74,9 +75,10 @@ local function ExportProfiles()
 	
 	HeroProfiles.factions = {}
 	for i=1,GetNumFactions() do
-		local name, description, standingId, bottomValue, topValue, earnedValue, _, _, isHeader, isCollapsed, hasRep, isWatched, isChild = GetFactionInfo(i)
+		local name, description, standingId, bottomValue, topValue, earnedValue, _, _, isHeader, isCollapsed, hasRep, isWatched, isChild, factionID = GetFactionInfo(i)
 		if (isHeader == false) then
 			local faction = {}
+			faction.id = factionID
 			faction.name = name
 			faction.earned = earnedValue
 			table.insert(HeroProfiles.factions, faction)
@@ -141,11 +143,6 @@ frame:Hide();
 frame:SetScript("OnEvent", function(self, event, ...)
 	local arg = {...}
 	
-	if (event == "TIME_PLAYED_MSG") then 
-		HeroProfiles.totalTime = arg[1]
-		HeroProfiles.currentLevelTime = arg[2]
-	end
-	
 	if (event == "ADDON_LOADED" and arg[1] == 'HeroProfiler') then
 		if (HeroProfiles == nil) then
 			HeroProfiles = {}
@@ -154,6 +151,12 @@ frame:SetScript("OnEvent", function(self, event, ...)
 	
 	if (event == "PLAYER_LOGIN") then
 		ExportProfiles()
+		RequestTimePlayed()
+	end
+	
+	if (event == "TIME_PLAYED_MSG") then 
+		HeroProfiles.totalTime = arg[1]
+		HeroProfiles.currentLevelTime = arg[2]
 	end
 	
 	if (event == "PLAYER_GUILD_UPDATE") then
