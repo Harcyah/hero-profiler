@@ -113,7 +113,7 @@ local function ExportProfiles()
 			prof2 = ExportProfession(prof2),
 			cooking = ExportProfession(cooking),
 			fishing = ExportProfession(fishing),
-			archaelogy = ExportArchaelogy(archaelogy)
+			archaeology = ExportArchaelogy(archaelogy)
 		}
 	end
 
