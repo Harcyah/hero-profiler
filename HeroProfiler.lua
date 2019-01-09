@@ -22,10 +22,10 @@ local function ExportProfession(index)
 		}
 	end
 	
-	local _, _, _, _, _, _, skillLine, _, _, _, skillLineName = GetProfessionInfo(index);
+	local name, _, _, _, _, _, skillLine = GetProfessionInfo(index);
 	return {
 		id = skillLine,
-		name = skillLineName
+		name = name
 	}
 end
 
@@ -204,18 +204,16 @@ frame:SetScript("OnEvent", function(self, event, ...)
 			end
 
 			-- where to put this ?
+			local p = HeroProfiles.professions
 			local _, _, _, _, _, parentID =  C_TradeSkillUI.GetTradeSkillLine();
-			if (HeroProfiles.professions.prof1.id == parentID) then
-				HeroProfiles.professions.prof1.levels = levels
-			elseif (HeroProfiles.professions.prof2.id == parentID) then
-				HeroProfiles.professions.prof2.id = parentSkillLineID
-				HeroProfiles.professions.prof2.levels = levels
-			elseif (HeroProfiles.professions.cooking.id == parentID) then
-				HeroProfiles.professions.cooking.id = parentSkillLineID
-				HeroProfiles.professions.cooking.levels = levels
-			elseif (HeroProfiles.professions.fishing.id == parentID) then
-				HeroProfiles.professions.fishing.id = parentSkillLineID
-				HeroProfiles.professions.fishing.levels = levels
+			if (p.prof1.id == parentID) then
+				p.prof1.levels = levels
+			elseif (p.prof2.id == parentID) then
+				p.prof2.levels = levels
+			elseif (p.cooking.id == parentID) then
+				p.cooking.levels = levels
+			elseif (p.fishing.id == parentID) then
+				p.fishing.levels = levels
 			end
 		end
 	end
