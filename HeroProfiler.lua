@@ -14,6 +14,16 @@ local function ExportContainer(index)
 	return bag
 end
 
+local function ExportProfession(index)
+	local name = select(1, GetProfessionInfo(index));
+	local id = select(7, GetProfessionInfo(index));
+	return {
+		id = id,
+		index = index,
+		name = name
+	}
+end
+
 local function ClearProfiles()
 	HeroProfiles = {}
 end
@@ -77,26 +87,10 @@ local function ExportProfiles()
 	local prof1, prof2, archaelogy, fishing, cooking = GetProfessions();
 	if (HeroProfiles.professions == nil) then
 		HeroProfiles.professions = {
-			prof1 = {
-				id = 0,
-				index = prof1,
-				name = GetProfessionInfo(prof1)
-			},
-			prof2 = {
-				id = 0,
-				index = prof2,
-				name = GetProfessionInfo(prof2)
-			},
-			cooking = {
-				id = 0,
-				index = cooking,
-				name = GetProfessionInfo(cooking)
-			},
-			fishing = {
-				id = 0,
-				index = fishing,
-				name = GetProfessionInfo(fishing)
-			}
+			prof1 = ExportProfession(prof1),
+			prof2 = ExportProfession(prof2),
+			cooking = ExportProfession(cooking),
+			fishing = ExportProfession(fishing)
 		}
 	end
 
@@ -119,11 +113,20 @@ local function ExportProfiles()
 	HeroProfiles.bags.bag4 = ExportContainer(4)
 end
 
-SlashCmdList_AddSlashCommand('HERO_PROFILER_SLASHCMD_EXPORT', ExportProfiles, '/hpexport')
+local function SlashCmdList_AddSlashCommand(name, func, ...)
+	SlashCmdList[name] = func
+	local command = ''
+	for i = 1, select('#', ...) do
+		command = select(i, ...)
+		if strsub(command, 1, 1) ~= '/' then
+			command = '/' .. command
+		end
+		_G['SLASH_'..name..i] = command
+	end
+end
 
-SlashCmdList_AddSlashCommand('HERO_PROFILER_SLASHCMD_CLEAR', function()
-	ClearProfiles()
-end, '/hpclear')
+SlashCmdList_AddSlashCommand('HERO_PROFILER_SLASHCMD_EXPORT', ExportProfiles, '/hpexport')
+SlashCmdList_AddSlashCommand('HERO_PROFILER_SLASHCMD_CLEAR', ClearProfiles, '/hpclear')
 
 local frame = CreateFrame("Frame");
 frame:RegisterEvent("ADDON_LOADED");
