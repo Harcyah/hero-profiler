@@ -15,12 +15,34 @@ local function ExportContainer(index)
 end
 
 local function ExportProfession(index)
-	local name = select(1, GetProfessionInfo(index));
-	local id = select(7, GetProfessionInfo(index));
+	if (index == nil) then
+		return {
+			id = 0,
+			name = "UNKNOWN"
+		}
+	end
+	
+	local _, _, _, _, _, _, skillLine, _, _, _, skillLineName = GetProfessionInfo(index);
 	return {
-		id = id,
-		index = index,
-		name = name
+		id = skillLine,
+		name = skillLineName
+	}
+end
+
+local function ExportArchaelogy(index)
+	if (index == nil) then
+		return {
+			id = 0,
+			name = "UNKNOWN"
+		}
+	end
+	
+	local name, _, rank, maxRank, _, _, skillLine, _, _, _, skillLineName = GetProfessionInfo(index);
+	return {
+		id = skillLine,
+		name = skillLineName,
+		skillLevel = rank,
+		maxLevel = maxRank
 	}
 end
 
@@ -90,19 +112,10 @@ local function ExportProfiles()
 			prof1 = ExportProfession(prof1),
 			prof2 = ExportProfession(prof2),
 			cooking = ExportProfession(cooking),
-			fishing = ExportProfession(fishing)
+			fishing = ExportProfession(fishing),
+			archaelogy = ExportArchaelogy(archaelogy)
 		}
 	end
-
-	-- Archaelogy
-	local name, _, skillLevel, maxSkillLevel = GetProfessionInfo(archaelogy)
-	HeroProfiles.professions.archaelogy = {
-		id = 794,
-		index = archaelogy,
-		name = name,
-		skillLevel = skillLevel,
-		maxLevel = maxSkillLevel
-	}
 
 	-- Bags
 	HeroProfiles.bags = {}
