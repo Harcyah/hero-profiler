@@ -21,7 +21,7 @@ local function ExportProfession(index)
 			name = "UNKNOWN"
 		}
 	end
-	
+
 	local name, _, _, _, _, _, skillLine = GetProfessionInfo(index);
 	return {
 		id = skillLine,
@@ -36,7 +36,7 @@ local function ExportArchaelogy(index)
 			name = "UNKNOWN"
 		}
 	end
-	
+
 	local name, _, rank, maxRank, _, _, skillLine, _, _, _, skillLineName = GetProfessionInfo(index);
 	return {
 		id = skillLine,
@@ -54,9 +54,7 @@ local function ExportProfiles()
 	HeroProfiles.name = UnitName("player")
 	HeroProfiles.realm = GetRealmName()
 	HeroProfiles.level = UnitLevel("player")
-	HeroProfiles.money = GetMoney()
-	HeroProfiles.zone = GetZoneText()
-	HeroProfiles.heartstone = GetBindLocation()
+	HeroProfiles.hearthstone = GetBindLocation()
 	HeroProfiles.gender = UnitSex("player")
 	HeroProfiles.xp = UnitXP("player")
 	HeroProfiles.xpMax = UnitXPMax("player")
@@ -148,7 +146,10 @@ frame:RegisterEvent("PLAYER_GUILD_UPDATE");
 frame:RegisterEvent("PLAYER_LOGOUT");
 frame:RegisterEvent("TIME_PLAYED_MSG");
 frame:RegisterEvent("BANKFRAME_OPENED");
+frame:RegisterEvent("PLAYER_MONEY");
+frame:RegisterEvent("PLAYER_XP_UPDATE");
 frame:RegisterEvent("TRADE_SKILL_LIST_UPDATE");
+frame:RegisterEvent("ZONE_CHANGED_NEW_AREA");
 frame:Hide();
 
 frame:SetScript("OnEvent", function(self, event, ...)
@@ -185,6 +186,18 @@ frame:SetScript("OnEvent", function(self, event, ...)
 		HeroProfiles.bags.bank5 = ExportContainer(9)
 		HeroProfiles.bags.bank6 = ExportContainer(10)
 		HeroProfiles.bags.bank7 = ExportContainer(11)
+	end
+
+	if (event == "PLAYER_MONEY") then
+		HeroProfiles.money = GetMoney()
+	end
+
+	if (event == "PLAYER_XP_UPDATE") then
+		HeroProfiles.xp = UnitXP("player")
+	end
+
+	if (event == "ZONE_CHANGED_NEW_AREA") then
+		HeroProfiles.zone = GetZoneText()
 	end
 
 	if (event == "TRADE_SKILL_LIST_UPDATE") then
