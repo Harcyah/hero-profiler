@@ -50,6 +50,21 @@ local function ClearProfiles()
 	HeroProfiles = {}
 end
 
+local function IsAchievementCompleted(id)
+	local _, _, _, completed, _, _, _, _, _, _, _, _, wasEarnedByMe = GetAchievementInfo(id)
+	return (completed and wasEarnedByMe)
+end
+
+local function ExportAchievements()
+	HeroProfiles.achievements = {}
+	HeroProfiles.achievements[12510] = IsAchievementCompleted(12510)
+	HeroProfiles.achievements[13467] = IsAchievementCompleted(13467)
+	HeroProfiles.achievements[13251] = IsAchievementCompleted(13251)
+	HeroProfiles.achievements[12473] = IsAchievementCompleted(12473)
+	HeroProfiles.achievements[12496] = IsAchievementCompleted(12496)
+	HeroProfiles.achievements[12497] = IsAchievementCompleted(12497)
+end
+
 local function ExportProfiles()
 	HeroProfiles.name = UnitName("player")
 	HeroProfiles.realm = GetRealmName()
@@ -122,6 +137,9 @@ local function ExportProfiles()
 	HeroProfiles.bags.bag2 = ExportContainer(2)
 	HeroProfiles.bags.bag3 = ExportContainer(3)
 	HeroProfiles.bags.bag4 = ExportContainer(4)
+
+	-- Achievements
+	ExportAchievements()
 end
 
 local function SlashCmdList_AddSlashCommand(name, func, ...)
@@ -142,6 +160,7 @@ SlashCmdList_AddSlashCommand('HERO_PROFILER_SLASHCMD_CLEAR', ClearProfiles, '/hp
 local frame = CreateFrame("Frame");
 frame:RegisterEvent("ADDON_LOADED");
 frame:RegisterEvent("PLAYER_LOGIN");
+frame:RegisterEvent("ACHIEVEMENT_EARNED");
 frame:RegisterEvent("PLAYER_GUILD_UPDATE");
 frame:RegisterEvent("PLAYER_LOGOUT");
 frame:RegisterEvent("TIME_PLAYED_MSG");
@@ -164,6 +183,10 @@ frame:SetScript("OnEvent", function(self, event, ...)
 	if (event == "PLAYER_LOGIN") then
 		ExportProfiles()
 		RequestTimePlayed()
+	end
+
+	if (event == "ACHIEVEMENT_EARNED") then
+		ExportAchievements()
 	end
 
 	if (event == "TIME_PLAYED_MSG") then
