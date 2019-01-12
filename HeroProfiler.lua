@@ -57,12 +57,12 @@ end
 
 local function ExportAchievements()
 	HeroProfiles.achievements = {}
-	HeroProfiles.achievements[12510] = IsAchievementCompleted(12510)
-	HeroProfiles.achievements[13467] = IsAchievementCompleted(13467)
-	HeroProfiles.achievements[13251] = IsAchievementCompleted(13251)
-	HeroProfiles.achievements[12473] = IsAchievementCompleted(12473)
-	HeroProfiles.achievements[12496] = IsAchievementCompleted(12496)
-	HeroProfiles.achievements[12497] = IsAchievementCompleted(12497)
+	HeroProfiles.achievements.warCampaign80 = IsAchievementCompleted(12510)
+	HeroProfiles.achievements.warCampaign81 = IsAchievementCompleted(13467)
+	HeroProfiles.achievements.tyrandeAscension = IsAchievementCompleted(13251)
+	HeroProfiles.achievements.zoneTiragardeSound = IsAchievementCompleted(12473)
+	HeroProfiles.achievements.zoneStormsongValley = IsAchievementCompleted(12496)
+	HeroProfiles.achievements.zoneDrustvar = IsAchievementCompleted(12497)
 end
 
 local function ExportProfiles()
