@@ -46,6 +46,12 @@ local function ExportArchaelogy(index)
 	}
 end
 
+local function ExportRest() 
+	local restId, restName = GetRestState()
+	HeroProfiles.restId = restId
+	HeroProfiles.restName = restName
+end
+
 local function ClearProfiles()
 	HeroProfiles = {}
 end
@@ -75,10 +81,6 @@ local function ExportProfiles()
 	HeroProfiles.xpMax = UnitXPMax("player")
 	HeroProfiles.health = UnitHealthMax("player")
 	HeroProfiles.side = UnitFactionGroup("player")
-
-	local restId, restName = GetRestState()
-	HeroProfiles.restId = restId
-	HeroProfiles.restName = restName
 
 	local avgItemLevel, avgItemLevelEquipped, avgItemLevelPvp = GetAverageItemLevel()
 	HeroProfiles.avgItemLevel = avgItemLevel
@@ -140,6 +142,9 @@ local function ExportProfiles()
 
 	-- Achievements
 	ExportAchievements()
+	
+	-- Rest
+	ExportRest()
 end
 
 local function SlashCmdList_AddSlashCommand(name, func, ...)
@@ -163,13 +168,13 @@ frame:RegisterEvent("PLAYER_LOGIN");
 frame:RegisterEvent("PLAYER_LOGOUT");
 frame:RegisterEvent("ACHIEVEMENT_EARNED");
 frame:RegisterEvent("PLAYER_GUILD_UPDATE");
-frame:RegisterEvent("PLAYER_LOGOUT");
 frame:RegisterEvent("TIME_PLAYED_MSG");
 frame:RegisterEvent("BANKFRAME_OPENED");
 frame:RegisterEvent("PLAYER_MONEY");
 frame:RegisterEvent("PLAYER_XP_UPDATE");
 frame:RegisterEvent("TRADE_SKILL_LIST_UPDATE");
 frame:RegisterEvent("ZONE_CHANGED_NEW_AREA");
+frame:RegisterEvent("PLAYER_UPDATE_RESTING")
 frame:Hide();
 
 frame:SetScript("OnEvent", function(self, event, ...)
@@ -226,6 +231,10 @@ frame:SetScript("OnEvent", function(self, event, ...)
 
 	if (event == "ZONE_CHANGED_NEW_AREA") then
 		HeroProfiles.zone = GetZoneText()
+	end
+	
+	if (event == "PLAYER_UPDATE_RESTING") then
+		ExportRest()
 	end
 
 	if (event == "TRADE_SKILL_LIST_UPDATE") then
