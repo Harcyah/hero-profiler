@@ -133,7 +133,9 @@ local function ExportProfiles()
 	end
 
 	-- Bags
-	HeroProfiles.bags = {}
+	if (HeroProfiles.bags == nil) then
+		HeroProfiles.bags = {}
+	end	
 	HeroProfiles.bags.backpack = ExportBackpack()
 	HeroProfiles.bags.bag1 = ExportContainer(1)
 	HeroProfiles.bags.bag2 = ExportContainer(2)
