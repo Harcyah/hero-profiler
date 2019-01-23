@@ -6,11 +6,47 @@ local function ExportBackpack()
 	return bag
 end
 
-local function ExportContainer(index)
+local function ExportBag(index)
 	local bag = {}
 	bag.link = GetInventoryItemLink("player", ContainerIDToInventoryID(index))
 	bag.numSlots = GetContainerNumSlots(index)
 	bag.freeSlots = GetContainerNumFreeSlots(index)
+	
+	if GetBagSlotFlag(index, LE_BAG_FILTER_FLAG_EQUIPMENT) then
+		bag.flag = 'EQUIPMENT'
+	end
+	if GetBagSlotFlag(index, LE_BAG_FILTER_FLAG_CONSUMABLES) then
+		bag.flag = 'CONSUMABLES'
+	end
+	if GetBagSlotFlag(index, LE_BAG_FILTER_FLAG_TRADE_GOODS) then
+		bag.flag = 'TRADE_GOODS'
+	end
+	if bag.flag == nil then
+		bag.flag = 'UNUSED'
+	end
+	
+	return bag
+end
+
+local function ExportBank(index)
+	local bank = {}
+	bank.link = GetInventoryItemLink("player", ContainerIDToInventoryID(index))
+	bank.numSlots = GetContainerNumSlots(index)
+	bank.freeSlots = GetContainerNumFreeSlots(index)
+	
+	if GetBankBagSlotFlag(index, LE_BAG_FILTER_FLAG_EQUIPMENT) then
+		bank.flag = 'EQUIPMENT'
+	end
+	if GetBankBagSlotFlag(index, LE_BAG_FILTER_FLAG_CONSUMABLES) then
+		bank.flag = 'CONSUMABLES'
+	end
+	if GetBankBagSlotFlag(index, LE_BAG_FILTER_FLAG_TRADE_GOODS) then
+		bank.flag = 'TRADE_GOODS'
+	end
+	if bank.flag == nil then
+		bank.flag = 'UNUSED'
+	end
+	
 	return bag
 end
 
@@ -137,10 +173,10 @@ local function ExportProfiles()
 		HeroProfiles.bags = {}
 	end	
 	HeroProfiles.bags.backpack = ExportBackpack()
-	HeroProfiles.bags.bag1 = ExportContainer(1)
-	HeroProfiles.bags.bag2 = ExportContainer(2)
-	HeroProfiles.bags.bag3 = ExportContainer(3)
-	HeroProfiles.bags.bag4 = ExportContainer(4)
+	HeroProfiles.bags.bag1 = ExportBag(1)
+	HeroProfiles.bags.bag2 = ExportBag(2)
+	HeroProfiles.bags.bag3 = ExportBag(3)
+	HeroProfiles.bags.bag4 = ExportBag(4)
 
 	-- Achievements
 	ExportAchievements()
@@ -214,13 +250,13 @@ frame:SetScript("OnEvent", function(self, event, ...)
 	end
 
 	if (event == "BANKFRAME_OPENED") then
-		HeroProfiles.bags.bank1 = ExportContainer(5)
-		HeroProfiles.bags.bank2 = ExportContainer(6)
-		HeroProfiles.bags.bank3 = ExportContainer(7)
-		HeroProfiles.bags.bank4 = ExportContainer(8)
-		HeroProfiles.bags.bank5 = ExportContainer(9)
-		HeroProfiles.bags.bank6 = ExportContainer(10)
-		HeroProfiles.bags.bank7 = ExportContainer(11)
+		HeroProfiles.bags.bank1 = ExportBank(5)
+		HeroProfiles.bags.bank2 = ExportBank(6)
+		HeroProfiles.bags.bank3 = ExportBank(7)
+		HeroProfiles.bags.bank4 = ExportBank(8)
+		HeroProfiles.bags.bank5 = ExportBank(9)
+		HeroProfiles.bags.bank6 = ExportBank(10)
+		HeroProfiles.bags.bank7 = ExportBank(11)
 	end
 
 	if (event == "PLAYER_MONEY") then
