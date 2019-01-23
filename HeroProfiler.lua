@@ -1,9 +1,8 @@
 local function ExportBackpack()
-	local bag = {}
-	bag.link = nil
-	bag.numSlots = GetContainerNumSlots(0)
-	bag.freeSlots = GetContainerNumFreeSlots(0)
-	return bag
+	local backpack = {}
+	backpack.numSlots = GetContainerNumSlots(0)
+	backpack.freeSlots = GetContainerNumFreeSlots(0)
+	return backpack
 end
 
 local function ExportBag(index)
@@ -47,7 +46,7 @@ local function ExportBank(index)
 		bank.flag = 'UNUSED'
 	end
 	
-	return bag
+	return bank
 end
 
 local function ExportProfession(index)
