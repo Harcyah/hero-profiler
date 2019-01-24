@@ -10,7 +10,7 @@ local function ExportBag(index)
 	bag.link = GetInventoryItemLink("player", ContainerIDToInventoryID(index))
 	bag.numSlots = GetContainerNumSlots(index)
 	bag.freeSlots = GetContainerNumFreeSlots(index)
-	
+
 	if GetBagSlotFlag(index, LE_BAG_FILTER_FLAG_EQUIPMENT) then
 		bag.flag = 'EQUIPMENT'
 	end
@@ -23,7 +23,7 @@ local function ExportBag(index)
 	if bag.flag == nil then
 		bag.flag = 'UNUSED'
 	end
-	
+
 	return bag
 end
 
@@ -32,7 +32,7 @@ local function ExportBank(index)
 	bank.link = GetInventoryItemLink("player", ContainerIDToInventoryID(index))
 	bank.numSlots = GetContainerNumSlots(index)
 	bank.freeSlots = GetContainerNumFreeSlots(index)
-	
+
 	if GetBankBagSlotFlag(index, LE_BAG_FILTER_FLAG_EQUIPMENT) then
 		bank.flag = 'EQUIPMENT'
 	end
@@ -45,7 +45,7 @@ local function ExportBank(index)
 	if bank.flag == nil then
 		bank.flag = 'UNUSED'
 	end
-	
+
 	return bank
 end
 
@@ -81,7 +81,7 @@ local function ExportArchaelogy(index)
 	}
 end
 
-local function ExportRest() 
+local function ExportRest()
 	local restId, restName = GetRestState()
 	HeroProfiles.restId = restId
 	HeroProfiles.restName = restName
@@ -104,6 +104,34 @@ local function ExportAchievements()
 	HeroProfiles.achievements.zoneTiragardeSound = IsAchievementCompleted(12473)
 	HeroProfiles.achievements.zoneStormsongValley = IsAchievementCompleted(12496)
 	HeroProfiles.achievements.zoneDrustvar = IsAchievementCompleted(12497)
+end
+
+local function ExportFollowers()
+	HeroProfiles.followers = {}
+	HeroProfiles.followers.falstadWildhammer = false
+	HeroProfiles.followers.kelseySteelspark = false
+	HeroProfiles.followers.magisterUmbric = false
+	HeroProfiles.followers.johnKeeshan = false
+	HeroProfiles.followers.shandrisFeathermoon = false
+
+	local followers = C_Garrison.GetFollowers(LE_FOLLOWER_TYPE_GARRISON_8_0)
+	for _, value in ipairs(followers) do
+		if value.garrFollowerID == 1065 and value.isCollected == true then
+			HeroProfiles.followers.falstadWildhammer = true
+		end
+		if value.garrFollowerID == 1068 and value.isCollected == true then
+			HeroProfiles.followers.kelseySteelspark = true
+		end
+		if value.garrFollowerID == 1072 and value.isCollected == true then
+			HeroProfiles.followers.magisterUmbric = true
+		end
+		if value.garrFollowerID == 1069 and value.isCollected == true then
+			HeroProfiles.followers.johnKeeshan = true
+		end
+		if value.garrFollowerID == 1062 and value.isCollected == true then
+			HeroProfiles.followers.shandrisFeathermoon = true
+		end
+	end
 end
 
 local function ExportProfiles()
@@ -170,7 +198,7 @@ local function ExportProfiles()
 	-- Bags
 	if (HeroProfiles.bags == nil) then
 		HeroProfiles.bags = {}
-	end	
+	end
 	HeroProfiles.bags.backpack = ExportBackpack()
 	HeroProfiles.bags.bag1 = ExportBag(1)
 	HeroProfiles.bags.bag2 = ExportBag(2)
@@ -179,7 +207,7 @@ local function ExportProfiles()
 
 	-- Achievements
 	ExportAchievements()
-	
+
 	-- Rest
 	ExportRest()
 end
@@ -211,7 +239,10 @@ frame:RegisterEvent("PLAYER_MONEY");
 frame:RegisterEvent("PLAYER_XP_UPDATE");
 frame:RegisterEvent("TRADE_SKILL_LIST_UPDATE");
 frame:RegisterEvent("ZONE_CHANGED_NEW_AREA");
-frame:RegisterEvent("PLAYER_UPDATE_RESTING")
+frame:RegisterEvent("PLAYER_UPDATE_RESTING");
+frame:RegisterEvent("GARRISON_FOLLOWER_ADDED");
+frame:RegisterEvent("GARRISON_FOLLOWER_REMOVED");
+frame:RegisterEvent("GARRISON_UPDATE");
 frame:Hide();
 
 frame:SetScript("OnEvent", function(self, event, ...)
@@ -227,7 +258,7 @@ frame:SetScript("OnEvent", function(self, event, ...)
 		ExportProfiles()
 		RequestTimePlayed()
 	end
-	
+
 	if (event == "PLAYER_LOGOUT") then
 		HeroProfiles.time = GetServerTime()
 	end
@@ -269,9 +300,13 @@ frame:SetScript("OnEvent", function(self, event, ...)
 	if (event == "ZONE_CHANGED_NEW_AREA") then
 		HeroProfiles.zone = GetZoneText()
 	end
-	
+
 	if (event == "PLAYER_UPDATE_RESTING") then
 		ExportRest()
+	end
+
+	if (event == "GARRISON_FOLLOWER_ADDED" or event == "GARRISON_FOLLOWER_REMOVED" or event == "GARRISON_UPDATE") then
+		ExportFollowers()
 	end
 
 	if (event == "TRADE_SKILL_LIST_UPDATE") then
