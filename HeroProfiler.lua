@@ -115,6 +115,10 @@ local function ExportFollowers()
 	HeroProfiles.followers.shandrisFeathermoon = false
 
 	local followers = C_Garrison.GetFollowers(LE_FOLLOWER_TYPE_GARRISON_8_0)
+	if (followers == nil) then
+		return
+	end
+	
 	for _, value in ipairs(followers) do
 		if value.garrFollowerID == 1065 and value.isCollected == true then
 			HeroProfiles.followers.falstadWildhammer = true
