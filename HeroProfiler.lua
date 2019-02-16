@@ -11,6 +11,9 @@ local function ExportBag(index)
 	bag.numSlots = GetContainerNumSlots(index)
 	bag.freeSlots = GetContainerNumFreeSlots(index)
 
+	if GetBagSlotFlag(index, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP) then
+		bag.flag = 'IGNORE'
+	end
 	if GetBagSlotFlag(index, LE_BAG_FILTER_FLAG_EQUIPMENT) then
 		bag.flag = 'EQUIPMENT'
 	end
@@ -33,6 +36,9 @@ local function ExportBank(index)
 	bank.numSlots = GetContainerNumSlots(index)
 	bank.freeSlots = GetContainerNumFreeSlots(index)
 
+	if GetBankBagSlotFlag(index, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP) then
+		bag.flag = 'IGNORE'
+	end
 	if GetBankBagSlotFlag(index, LE_BAG_FILTER_FLAG_EQUIPMENT) then
 		bank.flag = 'EQUIPMENT'
 	end
