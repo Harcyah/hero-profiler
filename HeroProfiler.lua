@@ -12,9 +12,9 @@ local function ExportBag(index)
 	bag.freeSlots = GetContainerNumFreeSlots(index)
 
 	if GetBagSlotFlag(index, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP) then
-		bag.sortable = true
-	else 
 		bag.sortable = false
+	else 
+		bag.sortable = true
 	end
 	
 	if GetBagSlotFlag(index, LE_BAG_FILTER_FLAG_EQUIPMENT) then
@@ -40,9 +40,9 @@ local function ExportBank(index)
 	bank.freeSlots = GetContainerNumFreeSlots(index)
 
 	if GetBankBagSlotFlag(index, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP) then
-		bank.sortable = true
-	else 
 		bank.sortable = false
+	else 
+		bank.sortable = true
 	end
 	
 	if GetBankBagSlotFlag(index, LE_BAG_FILTER_FLAG_EQUIPMENT) then
