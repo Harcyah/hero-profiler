@@ -12,19 +12,22 @@ local function ExportBag(index)
 	bag.freeSlots = GetContainerNumFreeSlots(index)
 
 	if GetBagSlotFlag(index, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP) then
-		bag.flag = 'IGNORE'
+		bag.sortable = true
+	else 
+		bag.sortable = false
 	end
+	
 	if GetBagSlotFlag(index, LE_BAG_FILTER_FLAG_EQUIPMENT) then
-		bag.flag = 'EQUIPMENT'
+		bag.content = 'EQUIPMENT'
 	end
 	if GetBagSlotFlag(index, LE_BAG_FILTER_FLAG_CONSUMABLES) then
-		bag.flag = 'CONSUMABLES'
+		bag.content = 'CONSUMABLES'
 	end
 	if GetBagSlotFlag(index, LE_BAG_FILTER_FLAG_TRADE_GOODS) then
-		bag.flag = 'TRADE_GOODS'
+		bag.content = 'TRADE_GOODS'
 	end
-	if bag.flag == nil then
-		bag.flag = 'UNUSED'
+	if bag.content == nil then
+		bag.content = 'UNDEFINED'
 	end
 
 	return bag
@@ -37,19 +40,22 @@ local function ExportBank(index)
 	bank.freeSlots = GetContainerNumFreeSlots(index)
 
 	if GetBankBagSlotFlag(index, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP) then
-		bag.flag = 'IGNORE'
+		bank.sortable = true
+	else 
+		bank.sortable = false
 	end
+	
 	if GetBankBagSlotFlag(index, LE_BAG_FILTER_FLAG_EQUIPMENT) then
-		bank.flag = 'EQUIPMENT'
+		bank.content = 'EQUIPMENT'
 	end
 	if GetBankBagSlotFlag(index, LE_BAG_FILTER_FLAG_CONSUMABLES) then
-		bank.flag = 'CONSUMABLES'
+		bank.content = 'CONSUMABLES'
 	end
 	if GetBankBagSlotFlag(index, LE_BAG_FILTER_FLAG_TRADE_GOODS) then
-		bank.flag = 'TRADE_GOODS'
+		bank.content = 'TRADE_GOODS'
 	end
-	if bank.flag == nil then
-		bank.flag = 'UNUSED'
+	if bank.content == nil then
+		bank.content = 'UNDEFINED'
 	end
 
 	return bank
