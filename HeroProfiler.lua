@@ -88,7 +88,7 @@ local function ExportArchaelogy(index)
 	return {
 		id = skillLine,
 		name = skillLineName,
-		skillLevel = rank,
+		currentLevel = rank,
 		maxLevel = maxRank
 	}
 end
