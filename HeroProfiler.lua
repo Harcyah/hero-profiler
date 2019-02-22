@@ -116,6 +116,8 @@ local function ExportAchievements()
 	HeroProfiles.achievements.zoneTiragardeSound = IsAchievementCompleted(12473)
 	HeroProfiles.achievements.zoneStormsongValley = IsAchievementCompleted(12496)
 	HeroProfiles.achievements.zoneDrustvar = IsAchievementCompleted(12497)
+	HeroProfiles.achievements.classyOutfit = IsAchievementCompleted(11298)
+	HeroProfiles.achievements.gloriousCampaign = IsAchievementCompleted(10994)
 end
 
 local function ExportFollowers()
@@ -228,6 +230,14 @@ local function ExportProfiles()
 	ExportRest()
 end
 
+local function PrintButtons() 
+	for i=49,60 do 
+		print(i) 
+		local actionType, id, subType = GetActionInfo(i)
+		print ('button ', i, ' action:', actionType, ' id:', id, ' subtype:', subType)
+	end
+end
+
 local function SlashCmdList_AddSlashCommand(name, func, ...)
 	SlashCmdList[name] = func
 	local command = ''
@@ -242,6 +252,7 @@ end
 
 SlashCmdList_AddSlashCommand('HERO_PROFILER_SLASHCMD_EXPORT', ExportProfiles, '/hpexport')
 SlashCmdList_AddSlashCommand('HERO_PROFILER_SLASHCMD_CLEAR', ClearProfiles, '/hpclear')
+SlashCmdList_AddSlashCommand('HERO_PROFILER_SLASHCMD_BUTTON', PrintButtons, '/hppb')
 
 local frame = CreateFrame("Frame");
 frame:RegisterEvent("ADDON_LOADED");
