@@ -153,6 +153,7 @@ local function ExportFollowers()
 end
 
 local function ExportProfiles()
+	HeroProfiles.guid = UnitGUID("player")
 	HeroProfiles.name = UnitName("player")
 	HeroProfiles.realm = GetRealmName()
 	HeroProfiles.level = UnitLevel("player")
