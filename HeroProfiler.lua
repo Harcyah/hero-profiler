@@ -120,6 +120,20 @@ local function ExportAchievements()
 	HeroProfiles.achievements.gloriousCampaign = IsAchievementCompleted(10994)
 end
 
+local function ExportCurrencies() 
+	HeroProfiles.currencies = {}
+	for i = 1, GetCurrencyListSize() do
+		local name, header, _, _, _, count, icon = GetCurrencyListInfo(i)
+		if not header then
+			local currency = {}
+			currency.name = name
+			currency.count = count
+			currency.icon = icon
+			table.insert(HeroProfiles.currencies, currency)
+		end
+	end
+end
+
 local function ExportFollowers()
 	HeroProfiles.followers = {}
 	HeroProfiles.followers.falstadWildhammer = false
@@ -226,6 +240,9 @@ local function ExportProfiles()
 
 	-- Achievements
 	ExportAchievements()
+	
+	-- Currencies
+	ExportCurrencies()
 
 	-- Rest
 	ExportRest()
@@ -289,6 +306,7 @@ frame:SetScript("OnEvent", function(self, event, ...)
 
 	if (event == "PLAYER_LOGOUT") then
 		HeroProfiles.time = GetServerTime()
+		ExportCurrencies()
 	end
 
 	if (event == "ACHIEVEMENT_EARNED") then
