@@ -112,6 +112,7 @@ local function ExportQuests()
 	HeroProfiles.quests = {}
 	HeroProfiles.quests['54964'] = IsQuestFlaggedCompleted(54964)
 	HeroProfiles.quests['53990'] = IsQuestFlaggedCompleted(53990)
+	HeroProfiles.quests['55090'] = IsQuestFlaggedCompleted(55090)
 end
 
 local function ExportAchievements()
