@@ -108,6 +108,12 @@ local function IsAchievementCompleted(id)
 	return (completed and wasEarnedByMe)
 end
 
+local function ExportQuests()
+	HeroProfiles.quests = {}
+	HeroProfiles.quests['54964'] = IsQuestFlaggedCompleted(54964)
+	HeroProfiles.quests['53990'] = IsQuestFlaggedCompleted(53990)
+end
+
 local function ExportAchievements()
 	HeroProfiles.achievements = {}
 	HeroProfiles.achievements.warCampaign80 = IsAchievementCompleted(12510)
@@ -238,22 +244,10 @@ local function ExportProfiles()
 	HeroProfiles.bags.bag3 = ExportBag(3)
 	HeroProfiles.bags.bag4 = ExportBag(4)
 
-	-- Achievements
 	ExportAchievements()
-	
-	-- Currencies
+	ExportQuests()
 	ExportCurrencies()
-
-	-- Rest
 	ExportRest()
-end
-
-local function PrintButtons() 
-	for i=49,60 do 
-		print(i) 
-		local actionType, id, subType = GetActionInfo(i)
-		print ('button ', i, ' action:', actionType, ' id:', id, ' subtype:', subType)
-	end
 end
 
 local function SlashCmdList_AddSlashCommand(name, func, ...)
@@ -270,7 +264,6 @@ end
 
 SlashCmdList_AddSlashCommand('HERO_PROFILER_SLASHCMD_EXPORT', ExportProfiles, '/hpexport')
 SlashCmdList_AddSlashCommand('HERO_PROFILER_SLASHCMD_CLEAR', ClearProfiles, '/hpclear')
-SlashCmdList_AddSlashCommand('HERO_PROFILER_SLASHCMD_BUTTON', PrintButtons, '/hppb')
 
 local frame = CreateFrame("Frame");
 frame:RegisterEvent("ADDON_LOADED");
@@ -281,6 +274,7 @@ frame:RegisterEvent("PLAYER_GUILD_UPDATE");
 frame:RegisterEvent("TIME_PLAYED_MSG");
 frame:RegisterEvent("BANKFRAME_OPENED");
 frame:RegisterEvent("PLAYER_MONEY");
+frame:RegisterEvent("QUEST_FINISHED");
 frame:RegisterEvent("PLAYER_XP_UPDATE");
 frame:RegisterEvent("TRADE_SKILL_LIST_UPDATE");
 frame:RegisterEvent("ZONE_CHANGED_NEW_AREA");
@@ -311,6 +305,10 @@ frame:SetScript("OnEvent", function(self, event, ...)
 
 	if (event == "ACHIEVEMENT_EARNED") then
 		ExportAchievements()
+	end
+	
+	if (event == "QUEST_FINISHED") then
+		ExportQuests()
 	end
 
 	if (event == "TIME_PLAYED_MSG") then
