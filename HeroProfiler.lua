@@ -108,23 +108,38 @@ local function IsAchievementCompleted(id)
 	return (completed and wasEarnedByMe)
 end
 
+TRACKED_QUESTS = { 
+	54964, 
+	53990, 
+	55090,
+	53765
+}
+
 local function ExportQuests()
 	HeroProfiles.quests = {}
-	HeroProfiles.quests['54964'] = IsQuestFlaggedCompleted(54964)
-	HeroProfiles.quests['53990'] = IsQuestFlaggedCompleted(53990)
-	HeroProfiles.quests['55090'] = IsQuestFlaggedCompleted(55090)
+	for i = 1, #TRACKED_QUESTS do
+		id = TRACKED_QUESTS[i]
+		HeroProfiles.quests[tostring(id)] = IsQuestFlaggedCompleted(id)
+	end
 end
+
+TRACKED_ACHIEVEMENTS = {
+	12510,
+	13467,
+	13251,
+	12473,
+	12496,
+	12497,
+	11298,
+	10994
+}
 
 local function ExportAchievements()
 	HeroProfiles.achievements = {}
-	HeroProfiles.achievements.warCampaign80 = IsAchievementCompleted(12510)
-	HeroProfiles.achievements.warCampaign81 = IsAchievementCompleted(13467)
-	HeroProfiles.achievements.tyrandeAscension = IsAchievementCompleted(13251)
-	HeroProfiles.achievements.zoneTiragardeSound = IsAchievementCompleted(12473)
-	HeroProfiles.achievements.zoneStormsongValley = IsAchievementCompleted(12496)
-	HeroProfiles.achievements.zoneDrustvar = IsAchievementCompleted(12497)
-	HeroProfiles.achievements.classyOutfit = IsAchievementCompleted(11298)
-	HeroProfiles.achievements.gloriousCampaign = IsAchievementCompleted(10994)
+	for i = 1, #TRACKED_ACHIEVEMENTS do
+		id = TRACKED_ACHIEVEMENTS[i]
+		HeroProfiles.achievements[tostring(id)] = IsAchievementCompleted(id)
+	end
 end
 
 local function ExportCurrencies() 
