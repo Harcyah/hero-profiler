@@ -203,6 +203,13 @@ local function ExportProfiles()
 	HeroProfiles.avgItemLevel = avgItemLevel
 	HeroProfiles.avgItemLevelEquipped = avgItemLevelEquipped
 	HeroProfiles.avgItemLevelPvp = avgItemLevelPvp
+	
+	local azeriteItemLocation = C_AzeriteItem.FindActiveAzeriteItem()
+	if azeriteItemLocation then
+		HeroProfiles.azeriteLevel = C_AzeriteItem.GetPowerLevel(azeriteItemLocation)
+	else
+		HeroProfiles.azeriteLevel = 0
+	end
 
 	HeroProfiles.hasMasterRiding = tostring(IsSpellKnown(90265))
 
