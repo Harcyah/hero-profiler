@@ -141,6 +141,39 @@ local function ExportAchievements()
 	end
 end
 
+local function ExportEquipmentSlot(name)
+	slot = GetInventorySlotInfo(name)
+	link = GetInventoryItemLink("player", slot)
+	level = GetDetailedItemLevelInfo(link)
+	return {
+		link = link,
+		level = level
+	}
+end
+
+local function ExportEquipment() 
+	HeroProfiles.equipment = {
+		headSlot = ExportEquipmentSlot("HeadSlot"),
+		neckSlot = ExportEquipmentSlot("NeckSlot"),
+		shoulderSlot = ExportEquipmentSlot("ShoulderSlot"),
+		backSlot = ExportEquipmentSlot("BackSlot"),
+		chestSlot = ExportEquipmentSlot("ChestSlot"),
+		shirtSlot = ExportEquipmentSlot("ShirtSlot"),
+		tabardSlot = ExportEquipmentSlot("TabardSlot"),
+		wristSlot = ExportEquipmentSlot("WristSlot"),
+		handsSlot = ExportEquipmentSlot("HandsSlot"),
+		waistSlot = ExportEquipmentSlot("WaistSlot"),
+		legsSlot = ExportEquipmentSlot("LegsSlot"),
+		feetSlot = ExportEquipmentSlot("FeetSlot"),
+		finger0Slot = ExportEquipmentSlot("Finger0Slot"),
+		finger1Slot = ExportEquipmentSlot("Finger1Slot"),
+		trinket0Slot = ExportEquipmentSlot("Trinket0Slot"),
+		trinket1Slot = ExportEquipmentSlot("Trinket1Slot"),
+		mainHandSlot = ExportEquipmentSlot("MainHandSlot"),
+		secondaryHandSlot = ExportEquipmentSlot("SecondaryHandSlot")
+	}
+end
+
 local function ExportCurrencies() 
 	HeroProfiles.currencies = {}
 	for i = 1, GetCurrencyListSize() do
@@ -268,6 +301,7 @@ local function ExportProfiles()
 
 	ExportAchievements()
 	ExportQuests()
+	ExportEquipment()
 	ExportCurrencies()
 	ExportRest()
 end
@@ -304,6 +338,7 @@ frame:RegisterEvent("PLAYER_UPDATE_RESTING");
 frame:RegisterEvent("GARRISON_FOLLOWER_ADDED");
 frame:RegisterEvent("GARRISON_FOLLOWER_REMOVED");
 frame:RegisterEvent("GARRISON_UPDATE");
+frame:RegisterEvent("PLAYER_EQUIPMENT_CHANGED");
 frame:Hide();
 
 frame:SetScript("OnEvent", function(self, event, ...)
@@ -369,6 +404,10 @@ frame:SetScript("OnEvent", function(self, event, ...)
 
 	if (event == "PLAYER_UPDATE_RESTING") then
 		ExportRest()
+	end
+	
+	if (event == "PLAYER_EQUIPMENT_CHANGED") then
+		ExportEquipment()
 	end
 
 	if (event == "GARRISON_FOLLOWER_ADDED" or event == "GARRISON_FOLLOWER_REMOVED" or event == "GARRISON_UPDATE") then
