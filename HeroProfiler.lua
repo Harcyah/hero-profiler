@@ -144,7 +144,10 @@ end
 local function ExportEquipmentSlot(name)
 	slot = GetInventorySlotInfo(name)
 	link = GetInventoryItemLink("player", slot)
-	level = GetDetailedItemLevelInfo(link)
+	level = nil
+	if (link ~= nil) then
+		level = GetDetailedItemLevelInfo(link)
+	end
 	return {
 		link = link,
 		level = level
