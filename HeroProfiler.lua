@@ -109,10 +109,13 @@ local function IsAchievementCompleted(id)
 end
 
 TRACKED_QUESTS = { 
-	54964, 
-	53990, 
-	55090,
-	53765
+	54964, -- https://www.wowhead.com/quest=54964/a-one-way-ticket-to-the-heart
+	53990, -- https://www.wowhead.com/quest=53990/in-darkest-night
+	55090, -- https://www.wowhead.com/quest=55090/a-gathering-of-foes
+	53765, -- https://www.wowhead.com/quest=53765/his-eye-upon-you
+	50973, -- https://www.wowhead.com/quest=50973/the-hearts-power
+	53405, -- https://www.wowhead.com/quest=53405/unlocking-the-hearts-potential
+	53406  -- https://www.wowhead.com/quest=53406/the-chamber-of-heart
 }
 
 local function ExportQuests()
