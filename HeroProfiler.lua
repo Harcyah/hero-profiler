@@ -108,21 +108,10 @@ local function IsAchievementCompleted(id)
 	return (completed and wasEarnedByMe)
 end
 
-TRACKED_QUESTS = {
-	54964, -- https://www.wowhead.com/quest=54964/a-one-way-ticket-to-the-heart
-	53990, -- https://www.wowhead.com/quest=53990/in-darkest-night
-	55090, -- https://www.wowhead.com/quest=55090/a-gathering-of-foes
-	53765, -- https://www.wowhead.com/quest=53765/his-eye-upon-you
-	50973, -- https://www.wowhead.com/quest=50973/the-hearts-power
-	53405, -- https://www.wowhead.com/quest=53405/unlocking-the-hearts-potential
-	53406  -- https://www.wowhead.com/quest=53406/the-chamber-of-heart
-}
-
 local function ExportQuests()
 	HeroProfiles.quests = {}
-	for i = 1, #TRACKED_QUESTS do
-		id = TRACKED_QUESTS[i]
-		HeroProfiles.quests[tostring(id)] = IsQuestFlaggedCompleted(id)
+	for k,v in pairs(GetQuestsCompleted()) do
+		tinsert(HeroProfiles.quests, k)
 	end
 end
 
