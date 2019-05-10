@@ -13,10 +13,10 @@ local function ExportBag(index)
 
 	if GetBagSlotFlag(index, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP) then
 		bag.sortable = false
-	else 
+	else
 		bag.sortable = true
 	end
-	
+
 	if GetBagSlotFlag(index, LE_BAG_FILTER_FLAG_EQUIPMENT) then
 		bag.content = 'EQUIPMENT'
 	end
@@ -41,10 +41,10 @@ local function ExportBank(index)
 
 	if GetBankBagSlotFlag(index, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP) then
 		bank.sortable = false
-	else 
+	else
 		bank.sortable = true
 	end
-	
+
 	if GetBankBagSlotFlag(index, LE_BAG_FILTER_FLAG_EQUIPMENT) then
 		bank.content = 'EQUIPMENT'
 	end
@@ -108,7 +108,7 @@ local function IsAchievementCompleted(id)
 	return (completed and wasEarnedByMe)
 end
 
-TRACKED_QUESTS = { 
+TRACKED_QUESTS = {
 	54964, -- https://www.wowhead.com/quest=54964/a-one-way-ticket-to-the-heart
 	53990, -- https://www.wowhead.com/quest=53990/in-darkest-night
 	55090, -- https://www.wowhead.com/quest=55090/a-gathering-of-foes
@@ -157,7 +157,7 @@ local function ExportEquipmentSlot(name)
 	}
 end
 
-local function ExportEquipment() 
+local function ExportEquipment()
 	HeroProfiles.equipment = {
 		headSlot = ExportEquipmentSlot("HeadSlot"),
 		neckSlot = ExportEquipmentSlot("NeckSlot"),
@@ -180,7 +180,7 @@ local function ExportEquipment()
 	}
 end
 
-local function ExportCurrencies() 
+local function ExportCurrencies()
 	HeroProfiles.currencies = {}
 	for i = 1, GetCurrencyListSize() do
 		local name, header, _, _, _, count, icon = GetCurrencyListInfo(i)
@@ -206,7 +206,7 @@ local function ExportFollowers()
 	if (followers == nil) then
 		return
 	end
-	
+
 	for _, value in ipairs(followers) do
 		if value.garrFollowerID == 1065 and value.isCollected == true then
 			HeroProfiles.followers.falstadWildhammer = true
@@ -242,7 +242,7 @@ local function ExportProfiles()
 	HeroProfiles.avgItemLevel = avgItemLevel
 	HeroProfiles.avgItemLevelEquipped = avgItemLevelEquipped
 	HeroProfiles.avgItemLevelPvp = avgItemLevelPvp
-	
+
 	local azeriteItemLocation = C_AzeriteItem.FindActiveAzeriteItem()
 	if azeriteItemLocation then
 		HeroProfiles.azeriteLevel = C_AzeriteItem.GetPowerLevel(azeriteItemLocation)
@@ -369,7 +369,7 @@ frame:SetScript("OnEvent", function(self, event, ...)
 	if (event == "ACHIEVEMENT_EARNED") then
 		ExportAchievements()
 	end
-	
+
 	if (event == "QUEST_FINISHED") then
 		ExportQuests()
 	end
@@ -411,7 +411,7 @@ frame:SetScript("OnEvent", function(self, event, ...)
 	if (event == "PLAYER_UPDATE_RESTING") then
 		ExportRest()
 	end
-	
+
 	if (event == "PLAYER_EQUIPMENT_CHANGED") then
 		ExportEquipment()
 	end
