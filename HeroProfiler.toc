@@ -1,5 +1,5 @@
 ## Title: HeroProfiler
-## Interface: 80100
+## Interface: 80200
 ## Notes: Export character profiles
 ## SavedVariablesPerCharacter: HeroProfiles
 HeroProfiler.lua
