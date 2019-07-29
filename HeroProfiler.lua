@@ -122,7 +122,8 @@ TRACKED_ACHIEVEMENTS = {
 	12496,
 	12497,
 	11298,
-	10994
+	10994,
+	13572
 }
 
 local function ExportAchievements()
