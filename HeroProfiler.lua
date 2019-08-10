@@ -191,6 +191,7 @@ local function ExportFollowers()
 	HeroProfiles.followers.magisterUmbric = false
 	HeroProfiles.followers.johnKeeshan = false
 	HeroProfiles.followers.shandrisFeathermoon = false
+	HeroProfiles.followers.grandAdmiralJesTereth = false
 
 	local followers = C_Garrison.GetFollowers(LE_FOLLOWER_TYPE_GARRISON_8_0)
 	if (followers == nil) then
@@ -212,6 +213,9 @@ local function ExportFollowers()
 		end
 		if value.garrFollowerID == 1062 and value.isCollected == true then
 			HeroProfiles.followers.shandrisFeathermoon = true
+		end
+		if value.garrFollowerID == 1182 and value.isCollected == true then
+			HeroProfiles.followers.grandAdmiralJesTereth = true
 		end
 	end
 end
