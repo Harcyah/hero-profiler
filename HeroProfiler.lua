@@ -323,7 +323,7 @@ SlashCmdList_AddSlashCommand('HERO_PROFILER_SLASHCMD_CLEAR', ClearProfiles, '/hp
 
 local frame = CreateFrame("Frame");
 frame:RegisterEvent("ADDON_LOADED");
-frame:RegisterEvent("PLAYER_LOGIN");
+frame:RegisterEvent("PLAYER_ENTERING_WORLD");
 frame:RegisterEvent("PLAYER_LOGOUT");
 frame:RegisterEvent("ACHIEVEMENT_EARNED");
 frame:RegisterEvent("PLAYER_GUILD_UPDATE");
@@ -350,7 +350,7 @@ frame:SetScript("OnEvent", function(self, event, ...)
 		end
 	end
 
-	if (event == "PLAYER_LOGIN") then
+	if (event == "PLAYER_ENTERING_WORLD") then
 		ExportProfiles()
 		RequestTimePlayed()
 	end
