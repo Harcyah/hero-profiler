@@ -306,24 +306,10 @@ local function ExportProfiles()
 	ExportRest()
 end
 
-local function SlashCmdList_AddSlashCommand(name, func, ...)
-	SlashCmdList[name] = func
-	local command = ''
-	for i = 1, select('#', ...) do
-		command = select(i, ...)
-		if strsub(command, 1, 1) ~= '/' then
-			command = '/' .. command
-		end
-		_G['SLASH_'..name..i] = command
-	end
-end
-
-SlashCmdList_AddSlashCommand('HERO_PROFILER_SLASHCMD_EXPORT', ExportProfiles, '/hpexport')
-SlashCmdList_AddSlashCommand('HERO_PROFILER_SLASHCMD_CLEAR', ClearProfiles, '/hpclear')
-
 local frame = CreateFrame("Frame");
 frame:RegisterEvent("ADDON_LOADED");
 frame:RegisterEvent("PLAYER_ENTERING_WORLD");
+frame:RegisterEvent("PLAYER_LOGIN");
 frame:RegisterEvent("PLAYER_LOGOUT");
 frame:RegisterEvent("ACHIEVEMENT_EARNED");
 frame:RegisterEvent("PLAYER_GUILD_UPDATE");
@@ -349,10 +335,13 @@ frame:SetScript("OnEvent", function(self, event, ...)
 			HeroProfiles = {}
 		end
 	end
+	
+	if (event == "PLAYER_LOGIN") then
+		RequestTimePlayed()
+	end
 
 	if (event == "PLAYER_ENTERING_WORLD") then
 		ExportProfiles()
-		RequestTimePlayed()
 	end
 
 	if (event == "PLAYER_LOGOUT") then
