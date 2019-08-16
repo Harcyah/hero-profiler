@@ -137,14 +137,17 @@ end
 local function ExportEquipmentSlot(name)
 	slot = GetInventorySlotInfo(name)
 	link = GetInventoryItemLink("player", slot)
-	level = nil
-	if (link ~= nil) then
-		level = GetDetailedItemLevelInfo(link)
+	if (link == nil) then
+		return {
+			link = "",
+			level = -1
+		}
+	else 
+		return {
+			link = link,
+			level = GetDetailedItemLevelInfo(link)
+		}
 	end
-	return {
-		link = link,
-		level = level
-	}
 end
 
 local function ExportEquipment()
@@ -325,6 +328,7 @@ frame:RegisterEvent("GARRISON_FOLLOWER_ADDED");
 frame:RegisterEvent("GARRISON_FOLLOWER_REMOVED");
 frame:RegisterEvent("GARRISON_UPDATE");
 frame:RegisterEvent("PLAYER_EQUIPMENT_CHANGED");
+frame:RegisterEvent("GET_ITEM_INFO_RECEIVED");
 frame:Hide();
 
 frame:SetScript("OnEvent", function(self, event, ...)
@@ -396,6 +400,10 @@ frame:SetScript("OnEvent", function(self, event, ...)
 	end
 
 	if (event == "PLAYER_EQUIPMENT_CHANGED") then
+		ExportEquipment()
+	end
+	
+	if (event == "GET_ITEM_INFO_RECEIVED") then
 		ExportEquipment()
 	end
 
