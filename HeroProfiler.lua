@@ -33,6 +33,17 @@ local function ExportBag(index)
 	return bag
 end
 
+local function ExportBags()
+	if (HeroProfiles.bags == nil) then
+		HeroProfiles.bags = {}
+	end
+	HeroProfiles.bags.backpack = ExportBackpack()
+	HeroProfiles.bags.bag1 = ExportBag(1)
+	HeroProfiles.bags.bag2 = ExportBag(2)
+	HeroProfiles.bags.bag3 = ExportBag(3)
+	HeroProfiles.bags.bag4 = ExportBag(4)
+end
+
 local function ExportBank(index)
 	local bank = {}
 	bank.link = GetInventoryItemLink("player", ContainerIDToInventoryID(index))
@@ -142,7 +153,7 @@ local function ExportEquipmentSlot(name)
 			link = "",
 			level = -1
 		}
-	else 
+	else
 		return {
 			link = link,
 			level = GetDetailedItemLevelInfo(link)
@@ -292,21 +303,12 @@ local function ExportProfiles()
 		}
 	end
 
-	-- Bags
-	if (HeroProfiles.bags == nil) then
-		HeroProfiles.bags = {}
-	end
-	HeroProfiles.bags.backpack = ExportBackpack()
-	HeroProfiles.bags.bag1 = ExportBag(1)
-	HeroProfiles.bags.bag2 = ExportBag(2)
-	HeroProfiles.bags.bag3 = ExportBag(3)
-	HeroProfiles.bags.bag4 = ExportBag(4)
-
 	ExportAchievements()
 	ExportQuests()
 	ExportEquipment()
 	ExportCurrencies()
 	ExportRest()
+	ExportBags()
 end
 
 local frame = CreateFrame("Frame");
@@ -318,6 +320,7 @@ frame:RegisterEvent("ACHIEVEMENT_EARNED");
 frame:RegisterEvent("PLAYER_GUILD_UPDATE");
 frame:RegisterEvent("TIME_PLAYED_MSG");
 frame:RegisterEvent("BANKFRAME_OPENED");
+frame:RegisterEvent("BAG_UPDATE");
 frame:RegisterEvent("PLAYER_MONEY");
 frame:RegisterEvent("QUEST_FINISHED");
 frame:RegisterEvent("PLAYER_XP_UPDATE");
@@ -339,7 +342,7 @@ frame:SetScript("OnEvent", function(self, event, ...)
 			HeroProfiles = {}
 		end
 	end
-	
+
 	if (event == "PLAYER_LOGIN") then
 		RequestTimePlayed()
 	end
@@ -383,6 +386,10 @@ frame:SetScript("OnEvent", function(self, event, ...)
 		HeroProfiles.bags.bank7 = ExportBank(11)
 	end
 
+	if (event == "BAG_UPDATE") then
+		ExportBags()
+	end
+
 	if (event == "PLAYER_MONEY") then
 		HeroProfiles.money = GetMoney()
 	end
@@ -402,7 +409,7 @@ frame:SetScript("OnEvent", function(self, event, ...)
 	if (event == "PLAYER_EQUIPMENT_CHANGED") then
 		ExportEquipment()
 	end
-	
+
 	if (event == "GET_ITEM_INFO_RECEIVED") then
 		ExportEquipment()
 	end
