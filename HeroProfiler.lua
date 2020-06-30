@@ -234,7 +234,7 @@ local function ExportFollowers()
 	end
 end
 
-local function ExportProfiles()
+local function ExportProfile()
 	HeroProfiles.guid = UnitGUID("player")
 	HeroProfiles.name = UnitName("player")
 	HeroProfiles.realm = GetRealmName()
@@ -348,7 +348,7 @@ frame:SetScript("OnEvent", function(self, event, ...)
 	end
 
 	if (event == "PLAYER_ENTERING_WORLD") then
-		ExportProfiles()
+		ExportProfile()
 	end
 
 	if (event == "PLAYER_LOGOUT") then
