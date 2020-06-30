@@ -72,38 +72,6 @@ local function ExportBank(index)
 	return bank
 end
 
-local function ExportProfession(index)
-	if (index == nil) then
-		return {
-			id = 0,
-			name = "UNKNOWN"
-		}
-	end
-
-	local name, _, _, _, _, _, skillLine = GetProfessionInfo(index);
-	return {
-		id = skillLine,
-		name = name
-	}
-end
-
-local function ExportArchaelogy(index)
-	if (index == nil) then
-		return {
-			id = 0,
-			name = "UNKNOWN"
-		}
-	end
-
-	local name, _, rank, maxRank, _, _, skillLine, _, _, _, skillLineName = GetProfessionInfo(index);
-	return {
-		id = skillLine,
-		name = skillLineName,
-		currentLevel = rank,
-		maxLevel = maxRank
-	}
-end
-
 local function ExportRest()
 	local restId, restName = GetRestState()
 	HeroProfiles.restId = restId
@@ -234,6 +202,48 @@ local function ExportFollowers()
 	end
 end
 
+local function ExportArchaeology()
+	local _, _, archaeology = GetProfessions()
+	local _, _, rank, maxRank, _, _, skillLine, _, _, _, skillLineName = GetProfessionInfo(archaeology);
+	HeroProfiles.professions.archaeology = {
+		id = skillLine,
+		name = skillLineName,
+		currentLevel = rank,
+		maxLevel = maxRank
+	}
+end
+
+local function ExportProfession()
+	if (C_TradeSkillUI.IsTradeSkillReady()) then
+		levels = {}
+		local categories = { C_TradeSkillUI.GetCategories() };
+		for i, categoryID in ipairs(categories) do
+			local info = C_TradeSkillUI.GetCategoryInfo(categoryID);
+			if (info.type == 'subheader') then
+				level = {}
+				level.id = categoryID
+				level.name = info.name
+				level.maxLevel = info.skillLineMaxLevel
+				level.currentLevel = info.skillLineCurrentLevel
+				table.insert(levels, level)
+			end
+		end
+
+		-- where to put this ?
+		local p = HeroProfiles.professions
+		local _, _, _, _, _, parentID =  C_TradeSkillUI.GetTradeSkillLine();
+		if (p.prof1.id == parentID) then
+			p.prof1.levels = levels
+		elseif (p.prof2.id == parentID) then
+			p.prof2.levels = levels
+		elseif (p.cooking.id == parentID) then
+			p.cooking.levels = levels
+		elseif (p.fishing.id == parentID) then
+			p.fishing.levels = levels
+		end
+	end
+end
+
 local function ExportProfile()
 	HeroProfiles.guid = UnitGUID("player")
 	HeroProfiles.name = UnitName("player")
@@ -292,17 +302,6 @@ local function ExportProfile()
 		end
 	end
 
-	local prof1, prof2, archaelogy, fishing, cooking = GetProfessions();
-	if (HeroProfiles.professions == nil) then
-		HeroProfiles.professions = {
-			prof1 = ExportProfession(prof1),
-			prof2 = ExportProfession(prof2),
-			cooking = ExportProfession(cooking),
-			fishing = ExportProfession(fishing),
-			archaeology = ExportArchaelogy(archaelogy)
-		}
-	end
-
 	ExportAchievements()
 	ExportQuests()
 	ExportEquipment()
@@ -324,6 +323,8 @@ frame:RegisterEvent("BAG_UPDATE");
 frame:RegisterEvent("PLAYER_MONEY");
 frame:RegisterEvent("QUEST_FINISHED");
 frame:RegisterEvent("PLAYER_XP_UPDATE");
+frame:RegisterEvent("ARCHAEOLOGY_TOGGLE");
+frame:RegisterEvent("TRADE_SKILL_SHOW");
 frame:RegisterEvent("TRADE_SKILL_LIST_UPDATE");
 frame:RegisterEvent("ZONE_CHANGED_NEW_AREA");
 frame:RegisterEvent("PLAYER_UPDATE_RESTING");
@@ -418,35 +419,16 @@ frame:SetScript("OnEvent", function(self, event, ...)
 		ExportFollowers()
 	end
 
-	if (event == "TRADE_SKILL_LIST_UPDATE") then
-		if (C_TradeSkillUI.IsTradeSkillReady()) then
-			levels = {}
-			local categories = { C_TradeSkillUI.GetCategories() };
-			for i, categoryID in ipairs(categories) do
-				local info = C_TradeSkillUI.GetCategoryInfo(categoryID);
-				if (info.type == 'subheader') then
-					level = {}
-					level.id = categoryID
-					level.name = info.name
-					level.maxLevel = info.skillLineMaxLevel
-					level.currentLevel = info.skillLineCurrentLevel
-					table.insert(levels, level)
-				end
-			end
+	if (event == "ARCHAEOLOGY_TOGGLE") then
+		ExportArchaeology();
+	end
 
-			-- where to put this ?
-			local p = HeroProfiles.professions
-			local _, _, _, _, _, parentID =  C_TradeSkillUI.GetTradeSkillLine();
-			if (p.prof1.id == parentID) then
-				p.prof1.levels = levels
-			elseif (p.prof2.id == parentID) then
-				p.prof2.levels = levels
-			elseif (p.cooking.id == parentID) then
-				p.cooking.levels = levels
-			elseif (p.fishing.id == parentID) then
-				p.fishing.levels = levels
-			end
-		end
+	if (event == "TRADE_SKILL_SHOW") then
+		ExportProfession();
+	end
+
+	if (event == "TRADE_SKILL_LIST_UPDATE") then
+		ExportProfession();
 	end
 
 end)
