@@ -95,13 +95,14 @@ local function ExportQuests()
 end
 
 TRACKED_ACHIEVEMENTS = {
-	12510,
-	13467,
+	10994,
+	11298,
+	11546,
 	12473,
 	12496,
 	12497,
-	11298,
-	10994,
+	12510,
+	13467,
 	13572
 }
 
