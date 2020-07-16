@@ -170,40 +170,21 @@ local function ExportCurrencies()
 	end
 end
 
-local function ExportFollowers()
-	HeroProfiles.followers = {}
-	HeroProfiles.followers.falstadWildhammer = false
-	HeroProfiles.followers.kelseySteelspark = false
-	HeroProfiles.followers.magisterUmbric = false
-	HeroProfiles.followers.johnKeeshan = false
-	HeroProfiles.followers.shandrisFeathermoon = false
-	HeroProfiles.followers.grandAdmiralJesTereth = false
-
-	local followers = C_Garrison.GetFollowers(LE_FOLLOWER_TYPE_GARRISON_8_0)
+local function ExportFollowersOfExpansion(expansionId)
+	local followers = C_Garrison.GetFollowers(expansionId);
 	if (followers == nil) then
-		return
+		return {}
+	else
+		return followers
 	end
+end
 
-	for _, value in ipairs(followers) do
-		if value.garrFollowerID == 1065 and value.isCollected == true then
-			HeroProfiles.followers.falstadWildhammer = true
-		end
-		if value.garrFollowerID == 1068 and value.isCollected == true then
-			HeroProfiles.followers.kelseySteelspark = true
-		end
-		if value.garrFollowerID == 1072 and value.isCollected == true then
-			HeroProfiles.followers.magisterUmbric = true
-		end
-		if value.garrFollowerID == 1069 and value.isCollected == true then
-			HeroProfiles.followers.johnKeeshan = true
-		end
-		if value.garrFollowerID == 1062 and value.isCollected == true then
-			HeroProfiles.followers.shandrisFeathermoon = true
-		end
-		if value.garrFollowerID == 1182 and value.isCollected == true then
-			HeroProfiles.followers.grandAdmiralJesTereth = true
-		end
-	end
+local function ExportFollowers()
+	HeroProfiles.followers = {
+		garrison60 = ExportFollowersOfExpansion(LE_FOLLOWER_TYPE_GARRISON_6_0),
+		garrison70 = ExportFollowersOfExpansion(LE_FOLLOWER_TYPE_GARRISON_7_0),
+		garrison80 = ExportFollowersOfExpansion(LE_FOLLOWER_TYPE_GARRISON_8_0)
+	}
 end
 
 local function ExportArchaeology()
@@ -306,12 +287,13 @@ local function ExportProfile()
 		end
 	end
 
-	ExportAchievements()
-	ExportQuests()
-	ExportEquipment()
-	ExportCurrencies()
-	ExportRest()
-	ExportBags()
+	ExportAchievements();
+	ExportQuests();
+	ExportEquipment();
+	ExportFollowers();
+	ExportCurrencies();
+	ExportRest();
+	ExportBags();
 end
 
 local frame = CreateFrame("Frame");
