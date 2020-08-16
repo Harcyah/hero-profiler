@@ -171,6 +171,58 @@ local function ExportCurrencies()
 	end
 end
 
+local function ExportMounts()
+	HeroProfiles.mounts = {};
+	local ids = C_MountJournal.GetMountIDs();
+	for i, id in pairs(ids) do
+		local name, _, _, active, usable, sourceType, _, isFactionSpecific, faction, _, collected, mountId = C_MountJournal.GetMountInfoByID(id);
+		local mount = {}
+		mount["id"] = mountId;
+		mount["name"] = name;
+		mount["owned"] = collected;
+		mount["active"] = active;
+		mount["usable"] = usable;
+		mount["sourceType"] = sourceType;
+		mount["isFactionSpecific"] = isFactionSpecific;
+		mount["faction"] = faction;
+		table.insert(HeroProfiles.mounts, mount);
+	end
+end
+
+local function ExportPets()
+	HeroProfiles.pets = {};
+	local total = C_PetJournal.GetNumPets();
+	for i = 1, total do
+		local _, _, isOwned, _, _, _, _, speciesName, _, _, companionID, _, _, _, _, _, _, obtainable = C_PetJournal.GetPetInfoByIndex(i);
+		local pet = {}
+		pet["id"] = companionID;
+		pet["name"] = speciesName;
+		pet["owned"] = isOwned;
+		pet["obtainable"] = obtainable;
+		table.insert(HeroProfiles.pets, pet);
+	end
+end
+
+local function ExportToys()
+	C_ToyBox.SetAllSourceTypeFilters(true);
+	C_ToyBox.SetCollectedShown(true);
+	C_ToyBox.SetUncollectedShown(true);
+	C_ToyBox.SetUnusableShown(true);
+	C_ToyBox.SetFilterString("");
+
+	HeroProfiles.toys = {};
+	local toys = C_ToyBox.GetNumToys();
+	for i = 1, toys do
+		local id = C_ToyBox.GetToyFromIndex(i);
+		local _, toyName, _, _, _, _ = C_ToyBox.GetToyInfo(id);
+		local toy = {};
+		toy["id"] = id;
+		toy["name"] = toyName;
+		toy["owned"] = PlayerHasToy(id);
+		table.insert(HeroProfiles.toys, toy);
+	end
+end
+
 local function ExportFollowersOfExpansion(expansionId)
 	local followers = C_Garrison.GetFollowers(expansionId);
 	if (followers == nil) then
@@ -295,6 +347,8 @@ local function ExportProfile()
 	ExportCurrencies();
 	ExportRest();
 	ExportBags();
+	ExportMounts();
+	ExportToys();
 end
 
 local frame = CreateFrame("Frame");
@@ -320,6 +374,7 @@ frame:RegisterEvent("GARRISON_FOLLOWER_REMOVED");
 frame:RegisterEvent("GARRISON_UPDATE");
 frame:RegisterEvent("PLAYER_EQUIPMENT_CHANGED");
 frame:RegisterEvent("GET_ITEM_INFO_RECEIVED");
+frame:RegisterEvent("PET_JOURNAL_LIST_UPDATE");
 frame:Hide();
 
 frame:SetScript("OnEvent", function(self, event, ...)
@@ -416,6 +471,10 @@ frame:SetScript("OnEvent", function(self, event, ...)
 
 	if (event == "TRADE_SKILL_LIST_UPDATE") then
 		ExportProfession();
+	end
+
+	if (event == "PET_JOURNAL_LIST_UPDATE") then
+		ExportPets();
 	end
 
 end)
