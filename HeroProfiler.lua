@@ -175,16 +175,12 @@ local function ExportMounts()
 	HeroProfiles.mounts = {};
 	local ids = C_MountJournal.GetMountIDs();
 	for i, id in pairs(ids) do
-		local name, _, _, active, usable, sourceType, _, isFactionSpecific, faction, _, collected, mountId = C_MountJournal.GetMountInfoByID(id);
+		local name, spellId, _, _, _, _, _, _, _, _, collected, mountId = C_MountJournal.GetMountInfoByID(id);
 		local mount = {}
-		mount["id"] = mountId;
+		mount["mountId"] = mountId;
+		mount["spellId"] = spellId;
 		mount["name"] = name;
 		mount["owned"] = collected;
-		mount["active"] = active;
-		mount["usable"] = usable;
-		mount["sourceType"] = sourceType;
-		mount["isFactionSpecific"] = isFactionSpecific;
-		mount["faction"] = faction;
 		table.insert(HeroProfiles.mounts, mount);
 	end
 end
@@ -193,12 +189,11 @@ local function ExportPets()
 	HeroProfiles.pets = {};
 	local total = C_PetJournal.GetNumPets();
 	for i = 1, total do
-		local _, _, isOwned, _, _, _, _, speciesName, _, _, companionID, _, _, _, _, _, _, obtainable = C_PetJournal.GetPetInfoByIndex(i);
+		local _, _, isOwned, _, _, _, _, speciesName, _, _, companionID, _, _, _, _, _, _, _ = C_PetJournal.GetPetInfoByIndex(i);
 		local pet = {}
-		pet["id"] = companionID;
+		pet["petId"] = companionID;
 		pet["name"] = speciesName;
 		pet["owned"] = isOwned;
-		pet["obtainable"] = obtainable;
 		table.insert(HeroProfiles.pets, pet);
 	end
 end
@@ -216,7 +211,7 @@ local function ExportToys()
 		local id = C_ToyBox.GetToyFromIndex(i);
 		local _, toyName, _, _, _, _ = C_ToyBox.GetToyInfo(id);
 		local toy = {};
-		toy["id"] = id;
+		toy["toyId"] = id;
 		toy["name"] = toyName;
 		toy["owned"] = PlayerHasToy(id);
 		table.insert(HeroProfiles.toys, toy);
