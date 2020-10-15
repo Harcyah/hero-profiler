@@ -1,5 +1,5 @@
 ## Title: HeroProfiler
-## Interface: 80300
+## Interface: 90001
 ## Author: harcyah@gmail.com
 ## Notes: Export character profiles
 ## SavedVariablesPerCharacter: HeroProfiles

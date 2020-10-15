@@ -89,7 +89,7 @@ end
 
 local function ExportQuests()
 	HeroProfiles.quests = {}
-	for k,v in pairs(GetQuestsCompleted()) do
+	for k,v in pairs(C_QuestLog.GetAllCompletedQuestIDs()) do
 		tinsert(HeroProfiles.quests, k)
 	end
 end
@@ -159,8 +159,8 @@ end
 
 local function ExportCurrencies()
 	HeroProfiles.currencies = {}
-	for i = 1, GetCurrencyListSize() do
-		local name, header, _, _, _, count, icon = GetCurrencyListInfo(i)
+	for i = 1, C_CurrencyInfo.GetCurrencyListSize() do
+		local name, header, _, _, _, count, icon = C_CurrencyInfo.GetCurrencyListInfo(i)
 		if not header then
 			local currency = {}
 			currency.name = name
