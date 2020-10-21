@@ -160,12 +160,11 @@ end
 local function ExportCurrencies()
 	HeroProfiles.currencies = {}
 	for i = 1, C_CurrencyInfo.GetCurrencyListSize() do
-		local name, header, _, _, _, count, icon = C_CurrencyInfo.GetCurrencyListInfo(i)
-		if not header then
+		local info = C_CurrencyInfo.GetCurrencyListInfo(i)
+		if not info.isHeader then
 			local currency = {}
-			currency.name = name
-			currency.count = count
-			currency.icon = icon
+			currency.name = info.name
+			currency.count = info.quantity
 			table.insert(HeroProfiles.currencies, currency)
 		end
 	end
