@@ -90,7 +90,7 @@ end
 local function ExportQuests()
 	HeroProfiles.quests = {}
 	for k,v in pairs(C_QuestLog.GetAllCompletedQuestIDs()) do
-		tinsert(HeroProfiles.quests, k)
+		tinsert(HeroProfiles.quests, v)
 	end
 end
 
