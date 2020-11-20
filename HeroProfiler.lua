@@ -246,6 +246,36 @@ local function ExportArchaeology()
 end
 
 local function ExportProfession()
+	local prof1, prof2, _, fishing, cooking, _ = GetProfessions();
+
+	if (HeroProfiles.professions == nil) then
+		HeroProfiles.professions = {}
+	end
+	if (prof1 ~= nil and HeroProfiles.professions.prof1 == nil) then
+		local _, _, _, _, _, _, skillLine = GetProfessionInfo(prof1);
+		HeroProfiles.professions.prof1 = {
+			id = skillLine
+		};
+	end
+	if (prof2 ~= nil and HeroProfiles.professions.prof2 == nil) then
+		local _, _, _, _, _, _, skillLine = GetProfessionInfo(prof2);
+		HeroProfiles.professions.prof2 = {
+			id = skillLine
+		};
+	end
+	if (cooking ~= nil and HeroProfiles.professions.cooking == nil) then
+		local _, _, _, _, _, _, skillLine = GetProfessionInfo(cooking);
+		HeroProfiles.professions.cooking = {
+			id = skillLine
+		};
+	end
+	if (fishing ~= nil and HeroProfiles.professions.fishing == nil) then
+		local _, _, _, _, _, _, skillLine = GetProfessionInfo(fishing);
+		HeroProfiles.professions.fishing = {
+			id = skillLine
+		};
+	end
+
 	if (C_TradeSkillUI.IsTradeSkillReady()) then
 		levels = {}
 		local categories = { C_TradeSkillUI.GetCategories() };
@@ -264,13 +294,13 @@ local function ExportProfession()
 		-- where to put this ?
 		local p = HeroProfiles.professions
 		local _, _, _, _, _, parentID =  C_TradeSkillUI.GetTradeSkillLine();
-		if (p.prof1.id == parentID) then
+		if (p.prof1 ~= nil and p.prof1.id == parentID) then
 			p.prof1.levels = levels
-		elseif (p.prof2.id == parentID) then
+		elseif (p.prof2 ~= nil and p.prof2.id == parentID) then
 			p.prof2.levels = levels
-		elseif (p.cooking.id == parentID) then
+		elseif (p.cooking ~= nil and p.cooking.id == parentID) then
 			p.cooking.levels = levels
-		elseif (p.fishing.id == parentID) then
+		elseif (p.fishing ~= nil and p.fishing.id == parentID) then
 			p.fishing.levels = levels
 		end
 	end
