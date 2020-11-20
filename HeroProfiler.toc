@@ -1,5 +1,5 @@
 ## Title: HeroProfiler
-## Interface: 90001
+## Interface: 90002
 ## Author: harcyah@gmail.com
 ## Notes: Export character profiles
 ## SavedVariablesPerCharacter: HeroProfiles
