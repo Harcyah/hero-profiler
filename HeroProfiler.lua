@@ -7,7 +7,7 @@ end
 
 local function ExportBag(index)
 	local bag = {}
-	bag.link = GetInventoryItemLink("player", ContainerIDToInventoryID(index))
+	bag.link = GetInventoryItemLink('player', ContainerIDToInventoryID(index))
 	bag.numSlots = GetContainerNumSlots(index)
 	bag.freeSlots = GetContainerNumFreeSlots(index)
 
@@ -46,7 +46,7 @@ end
 
 local function ExportBank(index)
 	local bank = {}
-	bank.link = GetInventoryItemLink("player", ContainerIDToInventoryID(index))
+	bank.link = GetInventoryItemLink('player', ContainerIDToInventoryID(index))
 	bank.numSlots = GetContainerNumSlots(index)
 	bank.freeSlots = GetContainerNumFreeSlots(index)
 
@@ -120,10 +120,10 @@ end
 
 local function ExportEquipmentSlot(name)
 	slot = GetInventorySlotInfo(name)
-	link = GetInventoryItemLink("player", slot)
+	link = GetInventoryItemLink('player', slot)
 	if (link == nil) then
 		return {
-			link = "",
+			link = '',
 			level = -1
 		}
 	else
@@ -136,24 +136,24 @@ end
 
 local function ExportEquipment()
 	HeroProfiles.equipment = {
-		headSlot = ExportEquipmentSlot("HeadSlot"),
-		neckSlot = ExportEquipmentSlot("NeckSlot"),
-		shoulderSlot = ExportEquipmentSlot("ShoulderSlot"),
-		backSlot = ExportEquipmentSlot("BackSlot"),
-		chestSlot = ExportEquipmentSlot("ChestSlot"),
-		shirtSlot = ExportEquipmentSlot("ShirtSlot"),
-		tabardSlot = ExportEquipmentSlot("TabardSlot"),
-		wristSlot = ExportEquipmentSlot("WristSlot"),
-		handsSlot = ExportEquipmentSlot("HandsSlot"),
-		waistSlot = ExportEquipmentSlot("WaistSlot"),
-		legsSlot = ExportEquipmentSlot("LegsSlot"),
-		feetSlot = ExportEquipmentSlot("FeetSlot"),
-		finger0Slot = ExportEquipmentSlot("Finger0Slot"),
-		finger1Slot = ExportEquipmentSlot("Finger1Slot"),
-		trinket0Slot = ExportEquipmentSlot("Trinket0Slot"),
-		trinket1Slot = ExportEquipmentSlot("Trinket1Slot"),
-		mainHandSlot = ExportEquipmentSlot("MainHandSlot"),
-		secondaryHandSlot = ExportEquipmentSlot("SecondaryHandSlot")
+		headSlot = ExportEquipmentSlot('HeadSlot'),
+		neckSlot = ExportEquipmentSlot('NeckSlot'),
+		shoulderSlot = ExportEquipmentSlot('ShoulderSlot'),
+		backSlot = ExportEquipmentSlot('BackSlot'),
+		chestSlot = ExportEquipmentSlot('ChestSlot'),
+		shirtSlot = ExportEquipmentSlot('ShirtSlot'),
+		tabardSlot = ExportEquipmentSlot('TabardSlot'),
+		wristSlot = ExportEquipmentSlot('WristSlot'),
+		handsSlot = ExportEquipmentSlot('HandsSlot'),
+		waistSlot = ExportEquipmentSlot('WaistSlot'),
+		legsSlot = ExportEquipmentSlot('LegsSlot'),
+		feetSlot = ExportEquipmentSlot('FeetSlot'),
+		finger0Slot = ExportEquipmentSlot('Finger0Slot'),
+		finger1Slot = ExportEquipmentSlot('Finger1Slot'),
+		trinket0Slot = ExportEquipmentSlot('Trinket0Slot'),
+		trinket1Slot = ExportEquipmentSlot('Trinket1Slot'),
+		mainHandSlot = ExportEquipmentSlot('MainHandSlot'),
+		secondaryHandSlot = ExportEquipmentSlot('SecondaryHandSlot')
 	}
 end
 
@@ -176,10 +176,10 @@ local function ExportMounts()
 	for i, id in pairs(ids) do
 		local name, spellId, _, _, _, _, _, _, _, _, collected, mountId = C_MountJournal.GetMountInfoByID(id);
 		local mount = {}
-		mount["mountId"] = mountId;
-		mount["spellId"] = spellId;
-		mount["name"] = name;
-		mount["owned"] = collected;
+		mount['mountId'] = mountId;
+		mount['spellId'] = spellId;
+		mount['name'] = name;
+		mount['owned'] = collected;
 		table.insert(HeroProfiles.mounts, mount);
 	end
 end
@@ -190,9 +190,9 @@ local function ExportPets()
 	for i = 1, total do
 		local _, _, isOwned, _, _, _, _, speciesName, _, _, companionID, _, _, _, _, _, _, _ = C_PetJournal.GetPetInfoByIndex(i);
 		local pet = {}
-		pet["petId"] = companionID;
-		pet["name"] = speciesName;
-		pet["owned"] = isOwned;
+		pet['petId'] = companionID;
+		pet['name'] = speciesName;
+		pet['owned'] = isOwned;
 		table.insert(HeroProfiles.pets, pet);
 	end
 end
@@ -202,7 +202,7 @@ local function ExportToys()
 	C_ToyBox.SetCollectedShown(true);
 	C_ToyBox.SetUncollectedShown(true);
 	C_ToyBox.SetUnusableShown(true);
-	C_ToyBox.SetFilterString("");
+	C_ToyBox.SetFilterString('');
 
 	HeroProfiles.toys = {};
 	local toys = C_ToyBox.GetNumToys();
@@ -210,9 +210,9 @@ local function ExportToys()
 		local id = C_ToyBox.GetToyFromIndex(i);
 		local _, toyName, _, _, _, _ = C_ToyBox.GetToyInfo(id);
 		local toy = {};
-		toy["toyId"] = id;
-		toy["name"] = toyName;
-		toy["owned"] = PlayerHasToy(id);
+		toy['toyId'] = id;
+		toy['name'] = toyName;
+		toy['owned'] = PlayerHasToy(id);
 		table.insert(HeroProfiles.toys, toy);
 	end
 end
@@ -277,16 +277,16 @@ local function ExportProfession()
 end
 
 local function ExportProfile()
-	HeroProfiles.guid = UnitGUID("player")
-	HeroProfiles.name = UnitName("player")
+	HeroProfiles.guid = UnitGUID('player')
+	HeroProfiles.name = UnitName('player')
 	HeroProfiles.realm = GetRealmName()
-	HeroProfiles.level = UnitLevel("player")
+	HeroProfiles.level = UnitLevel('player')
 	HeroProfiles.hearthstone = GetBindLocation()
-	HeroProfiles.gender = UnitSex("player")
-	HeroProfiles.xp = UnitXP("player")
-	HeroProfiles.xpMax = UnitXPMax("player")
-	HeroProfiles.health = UnitHealthMax("player")
-	HeroProfiles.side = UnitFactionGroup("player")
+	HeroProfiles.gender = UnitSex('player')
+	HeroProfiles.xp = UnitXP('player')
+	HeroProfiles.xpMax = UnitXPMax('player')
+	HeroProfiles.health = UnitHealthMax('player')
+	HeroProfiles.side = UnitFactionGroup('player')
 
 	local avgItemLevel, avgItemLevelEquipped, avgItemLevelPvp = GetAverageItemLevel()
 	HeroProfiles.avgItemLevel = avgItemLevel
@@ -302,13 +302,13 @@ local function ExportProfile()
 
 	HeroProfiles.hasMasterRiding = tostring(IsSpellKnown(90265))
 
-	local className, classFile, classID = UnitClass("player");
+	local className, classFile, classID = UnitClass('player');
 	HeroProfiles.clazz = classFile
 
-	local raceName, raceFile, raceID = UnitRace("player")
+	local raceName, raceFile, raceID = UnitRace('player')
 	HeroProfiles.race = raceFile
 
-	local englishFaction, localizedFaction = UnitFactionGroup("player")
+	local englishFaction, localizedFaction = UnitFactionGroup('player')
 	HeroProfiles.faction = englishFaction
 
 	local specIndex = GetSpecialization()
@@ -345,75 +345,75 @@ local function ExportProfile()
 	ExportToys();
 end
 
-local frame = CreateFrame("Frame");
-frame:RegisterEvent("ADDON_LOADED");
-frame:RegisterEvent("PLAYER_ENTERING_WORLD");
-frame:RegisterEvent("PLAYER_LOGIN");
-frame:RegisterEvent("PLAYER_LOGOUT");
-frame:RegisterEvent("ACHIEVEMENT_EARNED");
-frame:RegisterEvent("PLAYER_GUILD_UPDATE");
-frame:RegisterEvent("TIME_PLAYED_MSG");
-frame:RegisterEvent("BANKFRAME_OPENED");
-frame:RegisterEvent("BAG_UPDATE");
-frame:RegisterEvent("PLAYER_MONEY");
-frame:RegisterEvent("QUEST_FINISHED");
-frame:RegisterEvent("PLAYER_XP_UPDATE");
-frame:RegisterEvent("ARCHAEOLOGY_TOGGLE");
-frame:RegisterEvent("TRADE_SKILL_SHOW");
-frame:RegisterEvent("TRADE_SKILL_LIST_UPDATE");
-frame:RegisterEvent("ZONE_CHANGED_NEW_AREA");
-frame:RegisterEvent("PLAYER_UPDATE_RESTING");
-frame:RegisterEvent("GARRISON_FOLLOWER_ADDED");
-frame:RegisterEvent("GARRISON_FOLLOWER_REMOVED");
-frame:RegisterEvent("GARRISON_UPDATE");
-frame:RegisterEvent("PLAYER_EQUIPMENT_CHANGED");
-frame:RegisterEvent("GET_ITEM_INFO_RECEIVED");
-frame:RegisterEvent("PET_JOURNAL_LIST_UPDATE");
+local frame = CreateFrame('Frame');
+frame:RegisterEvent('ADDON_LOADED');
+frame:RegisterEvent('PLAYER_ENTERING_WORLD');
+frame:RegisterEvent('PLAYER_LOGIN');
+frame:RegisterEvent('PLAYER_LOGOUT');
+frame:RegisterEvent('ACHIEVEMENT_EARNED');
+frame:RegisterEvent('PLAYER_GUILD_UPDATE');
+frame:RegisterEvent('TIME_PLAYED_MSG');
+frame:RegisterEvent('BANKFRAME_OPENED');
+frame:RegisterEvent('BAG_UPDATE');
+frame:RegisterEvent('PLAYER_MONEY');
+frame:RegisterEvent('QUEST_FINISHED');
+frame:RegisterEvent('PLAYER_XP_UPDATE');
+frame:RegisterEvent('ARCHAEOLOGY_TOGGLE');
+frame:RegisterEvent('TRADE_SKILL_SHOW');
+frame:RegisterEvent('TRADE_SKILL_LIST_UPDATE');
+frame:RegisterEvent('ZONE_CHANGED_NEW_AREA');
+frame:RegisterEvent('PLAYER_UPDATE_RESTING');
+frame:RegisterEvent('GARRISON_FOLLOWER_ADDED');
+frame:RegisterEvent('GARRISON_FOLLOWER_REMOVED');
+frame:RegisterEvent('GARRISON_UPDATE');
+frame:RegisterEvent('PLAYER_EQUIPMENT_CHANGED');
+frame:RegisterEvent('GET_ITEM_INFO_RECEIVED');
+frame:RegisterEvent('PET_JOURNAL_LIST_UPDATE');
 frame:Hide();
 
-frame:SetScript("OnEvent", function(self, event, ...)
+frame:SetScript('OnEvent', function(self, event, ...)
 	local arg = {...}
 
-	if (event == "ADDON_LOADED" and arg[1] == 'HeroProfiler') then
+	if (event == 'ADDON_LOADED' and arg[1] == 'HeroProfiler') then
 		if (HeroProfiles == nil) then
 			HeroProfiles = {}
 		end
 	end
 
-	if (event == "PLAYER_LOGIN") then
+	if (event == 'PLAYER_LOGIN') then
 		RequestTimePlayed()
 	end
 
-	if (event == "PLAYER_ENTERING_WORLD") then
+	if (event == 'PLAYER_ENTERING_WORLD') then
 		ExportProfile()
 	end
 
-	if (event == "PLAYER_LOGOUT") then
+	if (event == 'PLAYER_LOGOUT') then
 		HeroProfiles.time = GetServerTime()
 		ExportCurrencies()
 	end
 
-	if (event == "ACHIEVEMENT_EARNED") then
+	if (event == 'ACHIEVEMENT_EARNED') then
 		ExportAchievements()
 	end
 
-	if (event == "QUEST_FINISHED") then
+	if (event == 'QUEST_FINISHED') then
 		ExportQuests()
 	end
 
-	if (event == "TIME_PLAYED_MSG") then
+	if (event == 'TIME_PLAYED_MSG') then
 		HeroProfiles.totalTime = arg[1]
 		HeroProfiles.currentLevelTime = arg[2]
 	end
 
-	if (event == "PLAYER_GUILD_UPDATE") then
-		local guildName, guildRankName, guildRankIndex = GetGuildInfo("player")
+	if (event == 'PLAYER_GUILD_UPDATE') then
+		local guildName, guildRankName, guildRankIndex = GetGuildInfo('player')
 		HeroProfiles.guildName = guildName
 		HeroProfiles.guildRankName = guildRankName
 		HeroProfiles.guildRankIndex = guildRankIndex
 	end
 
-	if (event == "BANKFRAME_OPENED") then
+	if (event == 'BANKFRAME_OPENED') then
 		HeroProfiles.bags.bank1 = ExportBank(5)
 		HeroProfiles.bags.bank2 = ExportBank(6)
 		HeroProfiles.bags.bank3 = ExportBank(7)
@@ -423,51 +423,51 @@ frame:SetScript("OnEvent", function(self, event, ...)
 		HeroProfiles.bags.bank7 = ExportBank(11)
 	end
 
-	if (event == "BAG_UPDATE") then
+	if (event == 'BAG_UPDATE') then
 		ExportBags()
 	end
 
-	if (event == "PLAYER_MONEY") then
+	if (event == 'PLAYER_MONEY') then
 		HeroProfiles.money = GetMoney()
 	end
 
-	if (event == "PLAYER_XP_UPDATE") then
-		HeroProfiles.xp = UnitXP("player")
+	if (event == 'PLAYER_XP_UPDATE') then
+		HeroProfiles.xp = UnitXP('player')
 	end
 
-	if (event == "ZONE_CHANGED_NEW_AREA") then
+	if (event == 'ZONE_CHANGED_NEW_AREA') then
 		HeroProfiles.zone = GetZoneText()
 	end
 
-	if (event == "PLAYER_UPDATE_RESTING") then
+	if (event == 'PLAYER_UPDATE_RESTING') then
 		ExportRest()
 	end
 
-	if (event == "PLAYER_EQUIPMENT_CHANGED") then
+	if (event == 'PLAYER_EQUIPMENT_CHANGED') then
 		ExportEquipment()
 	end
 
-	if (event == "GET_ITEM_INFO_RECEIVED") then
+	if (event == 'GET_ITEM_INFO_RECEIVED') then
 		ExportEquipment()
 	end
 
-	if (event == "GARRISON_FOLLOWER_ADDED" or event == "GARRISON_FOLLOWER_REMOVED" or event == "GARRISON_UPDATE") then
+	if (event == 'GARRISON_FOLLOWER_ADDED' or event == 'GARRISON_FOLLOWER_REMOVED' or event == 'GARRISON_UPDATE') then
 		ExportFollowers()
 	end
 
-	if (event == "ARCHAEOLOGY_TOGGLE") then
+	if (event == 'ARCHAEOLOGY_TOGGLE') then
 		ExportArchaeology();
 	end
 
-	if (event == "TRADE_SKILL_SHOW") then
+	if (event == 'TRADE_SKILL_SHOW') then
 		ExportProfession();
 	end
 
-	if (event == "TRADE_SKILL_LIST_UPDATE") then
+	if (event == 'TRADE_SKILL_LIST_UPDATE') then
 		ExportProfession();
 	end
 
-	if (event == "PET_JOURNAL_LIST_UPDATE") then
+	if (event == 'PET_JOURNAL_LIST_UPDATE') then
 		ExportPets();
 	end
 
