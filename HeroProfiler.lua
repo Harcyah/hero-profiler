@@ -411,6 +411,8 @@ frame:SetScript('OnEvent', function(self, event, ...)
 	end
 
 	if (event == 'PLAYER_LOGIN') then
+		HeroProfiles.time = {}
+		HeroProfiles.time.login = GetServerTime()
 		RequestTimePlayed()
 	end
 
@@ -419,7 +421,7 @@ frame:SetScript('OnEvent', function(self, event, ...)
 	end
 
 	if (event == 'PLAYER_LOGOUT') then
-		HeroProfiles.time = GetServerTime()
+		HeroProfiles.time.logout = GetServerTime()
 		ExportCurrencies()
 	end
 
