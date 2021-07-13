@@ -235,7 +235,11 @@ local function ExportFollowers()
 end
 
 local function ExportArchaeology()
-	local _, _, archaeology = GetProfessions()
+	local prof1, prof2, archaeology, fishing, cooking, _ = GetProfessions();
+	if (HeroProfiles.professions == nil) then
+		HeroProfiles.professions = {}
+	end
+
 	local _, _, rank, maxRank, _, _, skillLine, _, _, _, skillLineName = GetProfessionInfo(archaeology);
 	HeroProfiles.professions.archaeology = {
 		id = skillLine,
@@ -246,11 +250,11 @@ local function ExportArchaeology()
 end
 
 local function ExportProfession()
-	local prof1, prof2, _, fishing, cooking, _ = GetProfessions();
-
+	local prof1, prof2, archaeology, fishing, cooking, _ = GetProfessions();
 	if (HeroProfiles.professions == nil) then
 		HeroProfiles.professions = {}
 	end
+
 	if (prof1 ~= nil and HeroProfiles.professions.prof1 == nil) then
 		local _, _, _, _, _, _, skillLine = GetProfessionInfo(prof1);
 		HeroProfiles.professions.prof1 = {
