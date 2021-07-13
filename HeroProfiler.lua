@@ -228,9 +228,9 @@ end
 
 local function ExportFollowers()
 	HeroProfiles.followers = {
-		garrison60 = ExportFollowersOfExpansion(Enum.GarrisonType.Type_6_0),
-		garrison70 = ExportFollowersOfExpansion(Enum.GarrisonType.Type_7_0),
-		garrison80 = ExportFollowersOfExpansion(Enum.GarrisonType.Type_8_0)
+		garrison60 = ExportFollowersOfExpansion(Enum.GarrisonFollowerType.FollowerType_6_0),
+		garrison70 = ExportFollowersOfExpansion(Enum.GarrisonFollowerType.FollowerType_7_0),
+		garrison80 = ExportFollowersOfExpansion(Enum.GarrisonFollowerType.FollowerType_8_0)
 	}
 end
 
