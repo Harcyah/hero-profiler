@@ -328,7 +328,7 @@ local function ExportProfile()
 	HeroProfiles.avgItemLevelPvp = avgItemLevelPvp
 
 	local azeriteItemLocation = C_AzeriteItem.FindActiveAzeriteItem()
-	if azeriteItemLocation then
+	if azeriteItemLocation and azeriteItemLocation:IsEquipmentSlot() then
 		HeroProfiles.azeriteLevel = C_AzeriteItem.GetPowerLevel(azeriteItemLocation)
 	else
 		HeroProfiles.azeriteLevel = 0
