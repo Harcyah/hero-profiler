@@ -94,7 +94,7 @@ local function ExportQuests()
 	end
 end
 
-TRACKED_ACHIEVEMENTS = {
+local TRACKED_ACHIEVEMENTS = {
 	10459,
 	10994,
 	11223,
