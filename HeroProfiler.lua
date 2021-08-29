@@ -89,9 +89,51 @@ end
 
 local function ExportQuests()
 	HeroProfiles.quests = {}
-	for k,v in pairs(C_QuestLog.GetAllCompletedQuestIDs()) do
+	local questIDs = C_QuestLog.GetAllCompletedQuestIDs()
+	for k,v in pairs(questIDs) do
 		tinsert(HeroProfiles.quests, v)
 	end
+end
+
+local MAP_ID_THE_MAW = 1543;
+local MAP_ID_BASTION = 1533;
+local MAP_ID_ARDENWEALD = 1565;
+local MAP_ID_MALDRAXXUS = 1536;
+local MAP_ID_REVENDRETH = 1525;
+
+local function ExportWorldBoss(bossQuestID, mapID, expansion)
+	local result = {}
+	result.available = false
+	result.completed = C_QuestLog.IsQuestFlaggedCompleted(bossQuestID)
+	result.questID = bossQuestID
+	result.expansion = expansion
+
+	local questsData = C_TaskQuest.GetQuestsForPlayerByMapID(mapID)
+	for i, data in pairs(questsData) do
+		if (data.questId == bossQuestID) then
+			result.available = true
+		end
+	end
+
+	if (result.completed) then
+		result.available = true
+	end
+
+	return result
+end
+
+local function ExportWorldBosses()
+	HeroProfiles.weekly.worldBosses = {}
+	HeroProfiles.weekly.worldBosses.valinor = ExportWorldBoss(61813, MAP_ID_BASTION, "9.0.0")
+    HeroProfiles.weekly.worldBosses.morgeth = ExportWorldBoss(64531, MAP_ID_THE_MAW, "9.1.0")
+    HeroProfiles.weekly.worldBosses.mortanis = ExportWorldBoss(61816, MAP_ID_MALDRAXXUS, "9.0.0")
+    HeroProfiles.weekly.worldBosses.nurgash = ExportWorldBoss(61814, MAP_ID_REVENDRETH, "9.0.0")
+    HeroProfiles.weekly.worldBosses.oranomonos = ExportWorldBoss(61815, MAP_ID_ARDENWEALD, "9.0.0")
+end
+
+local function ExportWeekly()
+	HeroProfiles.weekly = {}
+	ExportWorldBosses()
 end
 
 local TRACKED_ACHIEVEMENTS = {
@@ -378,6 +420,7 @@ local function ExportProfile()
 
 	ExportAchievements();
 	ExportQuests();
+	ExportWeekly();
 	ExportEquipment();
 	ExportFollowers();
 	ExportCurrencies();
@@ -443,6 +486,7 @@ frame:SetScript('OnEvent', function(self, event, ...)
 
 	if (event == 'QUEST_FINISHED') then
 		ExportQuests()
+		ExportWeekly()
 	end
 
 	if (event == 'TIME_PLAYED_MSG') then
