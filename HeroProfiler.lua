@@ -280,7 +280,8 @@ local function ExportFollowers()
 	HeroProfiles.followers = {
 		garrison60 = ExportFollowersOfExpansion(Enum.GarrisonFollowerType.FollowerType_6_0),
 		garrison70 = ExportFollowersOfExpansion(Enum.GarrisonFollowerType.FollowerType_7_0),
-		garrison80 = ExportFollowersOfExpansion(Enum.GarrisonFollowerType.FollowerType_8_0)
+		garrison80 = ExportFollowersOfExpansion(Enum.GarrisonFollowerType.FollowerType_8_0),
+		garrison90 = ExportFollowersOfExpansion(Enum.GarrisonFollowerType.FollowerType_9_0),
 	}
 end
 
