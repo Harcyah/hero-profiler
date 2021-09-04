@@ -432,29 +432,30 @@ local function ExportProfile()
 end
 
 local frame = CreateFrame('Frame');
-frame:RegisterEvent('ADDON_LOADED');
-frame:RegisterEvent('PLAYER_ENTERING_WORLD');
-frame:RegisterEvent('PLAYER_LOGIN');
-frame:RegisterEvent('PLAYER_LOGOUT');
 frame:RegisterEvent('ACHIEVEMENT_EARNED');
-frame:RegisterEvent('PLAYER_GUILD_UPDATE');
-frame:RegisterEvent('TIME_PLAYED_MSG');
-frame:RegisterEvent('BANKFRAME_OPENED');
-frame:RegisterEvent('BAG_UPDATE');
-frame:RegisterEvent('PLAYER_MONEY');
-frame:RegisterEvent('QUEST_FINISHED');
-frame:RegisterEvent('PLAYER_XP_UPDATE');
+frame:RegisterEvent('ADDON_LOADED');
 frame:RegisterEvent('ARCHAEOLOGY_TOGGLE');
-frame:RegisterEvent('TRADE_SKILL_SHOW');
-frame:RegisterEvent('TRADE_SKILL_LIST_UPDATE');
-frame:RegisterEvent('ZONE_CHANGED_NEW_AREA');
-frame:RegisterEvent('PLAYER_UPDATE_RESTING');
+frame:RegisterEvent('BAG_UPDATE');
+frame:RegisterEvent('BANKFRAME_OPENED');
+frame:RegisterEvent('COVENANT_CALLINGS_UPDATED');
 frame:RegisterEvent('GARRISON_FOLLOWER_ADDED');
 frame:RegisterEvent('GARRISON_FOLLOWER_REMOVED');
 frame:RegisterEvent('GARRISON_UPDATE');
-frame:RegisterEvent('PLAYER_EQUIPMENT_CHANGED');
 frame:RegisterEvent('GET_ITEM_INFO_RECEIVED');
 frame:RegisterEvent('PET_JOURNAL_LIST_UPDATE');
+frame:RegisterEvent('PLAYER_ENTERING_WORLD');
+frame:RegisterEvent('PLAYER_EQUIPMENT_CHANGED');
+frame:RegisterEvent('PLAYER_GUILD_UPDATE');
+frame:RegisterEvent('PLAYER_LOGIN');
+frame:RegisterEvent('PLAYER_LOGOUT');
+frame:RegisterEvent('PLAYER_MONEY');
+frame:RegisterEvent('PLAYER_UPDATE_RESTING');
+frame:RegisterEvent('PLAYER_XP_UPDATE');
+frame:RegisterEvent('QUEST_FINISHED');
+frame:RegisterEvent('TIME_PLAYED_MSG');
+frame:RegisterEvent('TRADE_SKILL_LIST_UPDATE');
+frame:RegisterEvent('TRADE_SKILL_SHOW');
+frame:RegisterEvent('ZONE_CHANGED_NEW_AREA');
 frame:Hide();
 
 frame:SetScript('OnEvent', function(self, event, ...)
@@ -470,6 +471,7 @@ frame:SetScript('OnEvent', function(self, event, ...)
 		HeroProfiles.time = {}
 		HeroProfiles.time.login = GetServerTime()
 		RequestTimePlayed()
+		C_CovenantCallings.RequestCallings()
 	end
 
 	if (event == 'PLAYER_ENTERING_WORLD') then
@@ -493,6 +495,30 @@ frame:SetScript('OnEvent', function(self, event, ...)
 	if (event == 'TIME_PLAYED_MSG') then
 		HeroProfiles.totalTime = arg[1]
 		HeroProfiles.currentLevelTime = arg[2]
+	end
+
+	if (event == 'COVENANT_CALLINGS_UPDATED') then
+		HeroProfiles.callings = {}
+		if (C_CovenantCallings.AreCallingsUnlocked()) then
+			for i = 1, 3 do
+				local calling = arg[1][i]
+				if (calling) then
+					HeroProfiles.callings[i] = {}
+					HeroProfiles.callings[i].available = true
+					HeroProfiles.callings[i].completed = true
+				else
+					HeroProfiles.callings[i] = {}
+					HeroProfiles.callings[i].available = false
+					HeroProfiles.callings[i].completed = false
+				end
+			end
+		else
+			for i = 1, 3 do
+				HeroProfiles.callings[i] = {}
+				HeroProfiles.callings[i].available = false
+				HeroProfiles.callings[i].completed = false
+			end
+		end
 	end
 
 	if (event == 'PLAYER_GUILD_UPDATE') then
