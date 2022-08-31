@@ -125,10 +125,10 @@ end
 local function ExportWorldBosses()
 	HeroProfiles.weekly.worldBosses = {}
 	HeroProfiles.weekly.worldBosses.valinor = ExportWorldBoss(61813, MAP_ID_BASTION, "9.0.0")
-    HeroProfiles.weekly.worldBosses.morgeth = ExportWorldBoss(64531, MAP_ID_THE_MAW, "9.1.0")
-    HeroProfiles.weekly.worldBosses.mortanis = ExportWorldBoss(61816, MAP_ID_MALDRAXXUS, "9.0.0")
-    HeroProfiles.weekly.worldBosses.nurgash = ExportWorldBoss(61814, MAP_ID_REVENDRETH, "9.0.0")
-    HeroProfiles.weekly.worldBosses.oranomonos = ExportWorldBoss(61815, MAP_ID_ARDENWEALD, "9.0.0")
+	HeroProfiles.weekly.worldBosses.morgeth = ExportWorldBoss(64531, MAP_ID_THE_MAW, "9.1.0")
+	HeroProfiles.weekly.worldBosses.mortanis = ExportWorldBoss(61816, MAP_ID_MALDRAXXUS, "9.0.0")
+	HeroProfiles.weekly.worldBosses.nurgash = ExportWorldBoss(61814, MAP_ID_REVENDRETH, "9.0.0")
+	HeroProfiles.weekly.worldBosses.oranomonos = ExportWorldBoss(61815, MAP_ID_ARDENWEALD, "9.0.0")
 end
 
 local function ExportWeekly()
@@ -151,13 +151,13 @@ local TRACKED_ACHIEVEMENTS = {
 	13467,
 	13572,
 	14281,
-    14206,
-    14164,
-    13878,
-    14801,
-    14799,
-    14800,
-    14798
+	14206,
+	14164,
+	13878,
+	14801,
+	14799,
+	14800,
+	14798
 }
 
 local function ExportAchievements()
